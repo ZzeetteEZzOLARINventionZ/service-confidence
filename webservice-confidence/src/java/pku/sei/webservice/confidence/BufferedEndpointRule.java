@@ -33,7 +33,7 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 
 	 public boolean accept(String s) {
 		 if (status.containsKey(s))
-			 return "200".equals(status.get(s));
+			 return !"200".equals(status.get(s));
 		 
 		 String sta = WsdlFile.getConnetedStatus(s);
 		 status.put(s, sta);
@@ -44,7 +44,7 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 				throw new RuntimeException(e);
 			}
 		 }
-		 return "200".equals(sta);
+		 return !"200".equals(sta);
 	 }
 
 }

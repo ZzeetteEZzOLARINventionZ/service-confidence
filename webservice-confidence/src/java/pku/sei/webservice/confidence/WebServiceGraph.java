@@ -72,15 +72,11 @@ public class WebServiceGraph {
 		
 		dEndpoint = new StatisticMap(new BufferedEndpointRule());
 		
-		dHost = new StatisticMap(new StatisticMap.Rule() {
-			 public boolean accept(String s) {
-				 return false;
-			 }
-		 });
+		dHost = new StatisticMap(new CheckWsdlRule());
 		
 		dBacklink = new StatisticMap(new StatisticMap.Rule() {
 			 public boolean accept(String s) {
-				 if ("download".equals(s))
+				 if ("notDownload".equals(s))
 					 return true;
 				 return false;
 			 }
