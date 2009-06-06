@@ -57,11 +57,16 @@ public class WsdlFile {
 		return DataAnalysis.IsValid(endpoint);
 	}
 	
-	public static boolean getConneted (String endpoint) {
+	public static String getConnetedStatus (String endpoint) {
 		String message = DataAnalysis.GetConnect(endpoint);
-		if (message == null || "".equals(message))
-			return false;
-		return true;
+		String[] lines = message.split("\n");
+		if (lines.length <= 0)
+			return "error";
+		StringTokenizer st = new StringTokenizer (lines[0]);
+		if (st.countTokens() < 2)
+			return "error";
+		st.nextToken();
+		return st.nextToken();
 	}
 	
 	public static String getDomain(String url) {
