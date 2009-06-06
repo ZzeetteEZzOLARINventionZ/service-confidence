@@ -1,0 +1,5 @@
+http://cancernet.cicams.ac.cn/ccd/services/monitor_service	error
+http://www.nactem.ac.uk/termine	403
+http://www.nactem.ac.uk/acromine	403
+http://www.testor.de/cgi-bin/msn/imstatus.wsdl	200
+http://www.nactem.ac.uk/acrodisambiguation	500
