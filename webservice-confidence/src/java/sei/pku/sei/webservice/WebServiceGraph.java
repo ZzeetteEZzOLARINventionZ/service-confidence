@@ -14,14 +14,28 @@ public class WebServiceGraph {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		for (int i = 0; i < graph.size(); i ++) {
 			String line = "" + i + ":\t";
-			ArrayList<Integer> edges = new ArrayList<Integer>();
+			ArrayList<Integer> edges = graph.get(i);
 			for (int j = 0; j < edges.size(); j ++)
-				line = line + edges.get(i) + "\t";
+				line = line + edges.get(j) + "\t";
 			writer.write(line);
 			writer.newLine();
 			
 		}
 		writer.close();
+	}
+	
+	public int[][] makeMatrix() {
+		int[][] matrix = new int[graph.size()][];
+		for (int i = 0; i < matrix.length; i ++)
+			matrix[i] = new int[graph.size()];
+		
+		for (int i = 0; i < graph.size(); i ++) {
+			ArrayList<Integer> edges = graph.get(i);
+			for (int j = 0; j < edges.size(); j ++)
+				matrix[i][j] = 1;
+		}
+		
+		return matrix;
 	}
 	
 	
@@ -64,6 +78,7 @@ public class WebServiceGraph {
 		WebServiceGraph graph = new WebServiceGraph();
 		
 		int error1Count = 0;
+		System.out.println(allServiceId.idUrl.size());
 		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
 			String id = pair.getKey();
 			String wsdlFile = "data/AllFile/" + id + ".wsdl";
@@ -72,7 +87,7 @@ public class WebServiceGraph {
 			String domain = WsdlFile.getDomain(url);
 			ArrayList<String> backlinks = new ArrayList<String>();
 			System.out.println(id);
-			System.out.println(url);
+			// System.out.println(url);
 			if (!notAvailServiceId.idUrl.containsKey(id)) {
 				backlinks = couldBacklink.urlBacklink.get(url);
 				if (backlinks == null) {
@@ -91,9 +106,8 @@ public class WebServiceGraph {
 				graph.addEdge("D_" + domain, "B_" + backlink);
 			}
 			
-			graph.saveGraph("data/graph.txt");
-			
 		}
+		graph.saveGraph("data/graph.txt");
 		// System.out.println("在有backlink里和没有backlink里都找不到的url的个数：" + error1Count);
 	}
 
