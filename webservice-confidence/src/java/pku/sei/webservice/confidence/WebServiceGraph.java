@@ -130,9 +130,9 @@ public class WebServiceGraph {
 				}
 			}
 			for (String backlink : backlinks) {
-				this.addNode("B_" + backlink);
-				this.addEdge("D_" + domain, "B_" + backlink);
-				this.dBacklink.add(backlink, "download");
+				this.addNode("B_" + WsdlFile.getDomain(backlink));
+				this.addEdge("D_" + domain, "B_" + WsdlFile.getDomain(backlink));
+				this.dBacklink.add(WsdlFile.getDomain(backlink), "download");
 			}
 			
 		}
@@ -142,7 +142,7 @@ public class WebServiceGraph {
 		for (Map.Entry<String, ArrayList<String>> pair : couldNotBacklink.urlBacklink.entrySet()) {
 			ArrayList<String> backlinks = pair.getValue();
 			for (String backlink : backlinks) {
-				this.dBacklink.add(backlink, "notDownload");
+				this.dBacklink.add(WsdlFile.getDomain(backlink), "notDownload");
 			}
 		}
 		
