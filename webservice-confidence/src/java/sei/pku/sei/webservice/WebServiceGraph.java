@@ -56,16 +56,16 @@ public class WebServiceGraph {
 		ServiceIdMap allServiceId = new ServiceIdMap("data/CrawledWSUrlFileNew_所有的wsdl url.txt");
 		ServiceIdMap notAvailServiceId = new ServiceIdMap("data/不能下载文件的wsdl_URL.txt");
 		BacklinkMap couldBacklink = new BacklinkMap(allServiceId);
-		couldBacklink.loadHasIdFile("能下载下来文件的wsdlURL的backlink.txt");
+		couldBacklink.loadHasIdFile("data/能下载下来文件的wsdlURL的backlink.txt");
 		
 		BacklinkMap couldNotBacklink = new BacklinkMap(allServiceId);
-		couldNotBacklink.loadNotHasIdFile("不能下载下文件的wsdlURL的backlinkFile.txt");
+		couldNotBacklink.loadNotHasIdFile("data/不能下载下文件的wsdlURL的backlinkFile.txt");
 		
 		WebServiceGraph graph = new WebServiceGraph();
 		
 		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
 			String id = pair.getKey();
-			String wsdlFile = "---/" + id + ".wsdl";
+			String wsdlFile = "data/AllFile/" + id + ".wsdl";
 			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
 			String url = pair.getValue();
 			String domain = WsdlFile.getDomain(url);
