@@ -30,6 +30,7 @@ public class WebServiceGraph {
 		for (int i = 0; i < graph.size(); i ++) {
 			String s = idUrl.get(i);
 			String key = s.substring(2);
+			System.out.println(s);
 			if (s.startsWith("E_")) {
 				d[i] = dEndpoint.statistic(key);
 			}
@@ -40,7 +41,7 @@ public class WebServiceGraph {
 				d[i] = dBacklink.statistic(key);
 			}
 		}
-		return null;
+		return d;
 	}
 	
 	public int[][] makeMatrix() {
@@ -51,7 +52,7 @@ public class WebServiceGraph {
 		for (int i = 0; i < graph.size(); i ++) {
 			ArrayList<Integer> edges = graph.get(i);
 			for (int j = 0; j < edges.size(); j ++)
-				matrix[i][j] = 1;
+				matrix[i][j] += 1;
 		}
 		
 		return matrix;
@@ -118,12 +119,14 @@ public class WebServiceGraph {
 			String wsdlFile = "data/AllFile/" + id + ".wsdl";
 			if (!new File(wsdlFile).exists())
 				continue;
+			System.out.println("wsdlFile:\t" + wsdlFile);
 			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
+			System.out.println("\tgeted endpoint");
 			String url = pair.getValue();
 			String domain = WsdlFile.getDomain(url);
 			ArrayList<String> backlinks = new ArrayList<String>();
 			// System.out.println(id);
-			System.out.println(url);
+			// System.out.println(url);
 			if (!notAvailServiceId.idUrl.containsKey(id)) {
 				backlinks = couldBacklink.urlBacklink.get(url);
 				if (backlinks == null) {
@@ -134,11 +137,12 @@ public class WebServiceGraph {
 			}
 			graph.addNode("D_" + domain);
 			graph.dHost.add(domain, wsdlFile);
+			// System.out.println("\tsfdsadfasfasf");
 			
 			for (String endpoint : endpoints) {
 				if (WsdlFile.isEndpointValid(endpoint)) {
-					graph.addNode("E_" + endpoint);
-					graph.addEdge("E_" + endpoint, "D_" + domain);
+					graph.addNode("E_" + WsdlFile.getDomain(endpoint));
+					graph.addEdge("E_" + WsdlFile.getDomain(endpoint), "D_" + domain);
 					graph.dEndpoint.add(WsdlFile.getDomain(endpoint), endpoint);
 				}
 			}

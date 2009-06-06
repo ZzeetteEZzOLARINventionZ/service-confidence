@@ -43,7 +43,7 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 		 
 		 boolean connected = WsdlFile.getConneted(s);
 		 status.put(s, connected);
-		 if (status.size() % 20 == 0) {
+		 if (status.size() % 5 == 0) {
 			 try {
 				saveInfo();
 			} catch (Exception e) {

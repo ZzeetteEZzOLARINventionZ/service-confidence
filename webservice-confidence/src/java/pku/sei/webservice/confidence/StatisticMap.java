@@ -23,6 +23,8 @@ public class StatisticMap {
 	
 	public double statistic(String key) {
 		ArrayList<String> values = map.get(key);
+		if (values == null)
+			System.out.println(key);
 		if (values.size() == 0)
 			return 0.0;
 		double num = 0.0;
