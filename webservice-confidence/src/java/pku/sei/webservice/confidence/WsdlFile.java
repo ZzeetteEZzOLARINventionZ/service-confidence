@@ -5,9 +5,19 @@ import java.util.ArrayList;
 import pku.sei.webservice.DataAnalysis;
 
 public class WsdlFile {
-	//TODO implement it
 	public static ArrayList<String> getWSDLEndpoints(String file) throws Exception {
 		return DataAnalysis.GetEndPoint(file);
+	}
+	
+	public static boolean isEndpointValid(String endpoint) {
+		return DataAnalysis.IsValid(endpoint);
+	}
+	
+	public static boolean getConneted (String endpoint) {
+		String message = DataAnalysis.GetConnect(endpoint);
+		if (message == null || "".equals(message))
+			return false;
+		return true;
 	}
 	
 	public static String getDomain(String url) {
