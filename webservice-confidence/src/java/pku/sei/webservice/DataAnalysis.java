@@ -648,28 +648,33 @@ public class DataAnalysis {
 		}
 		return flag;
 	}
-
+	/**
+	 * ≈–∂œendPoint «∑Ò∫œ∑®
+	 * @param EndPointDomain
+	 * @return
+	 */
 	public static boolean IsValid(String EndPointDomain) {
-		boolean flag = true;
 		if (EndPointDomain.trim().length() == 0) {
-			flag = false;
+			return false;
 		}
-		if (EndPointDomain.toLowerCase().indexOf("localhost") != -1) {
-			flag = false;
+		if(EndPointDomain.indexOf('.')==-1)
+			return false;
+		ArrayList<String> invalidEndpoint = new ArrayList<String>();
+		invalidEndpoint.add("localhost");
+		invalidEndpoint.add("127.0.0.1");
+		invalidEndpoint.add("192.168.");
+		invalidEndpoint.add("example.org");
+		invalidEndpoint.add("example.net");
+		invalidEndpoint.add("example.com");
+		invalidEndpoint.add("--- For physical URL please ask provider ---");
+		invalidEndpoint.add("0.0.0.0");
+		invalidEndpoint.add("your.server.com");
+		invalidEndpoint.add("xxx");
+		for (String end : invalidEndpoint) {
+			if(EndPointDomain.toLowerCase().trim().indexOf(end)!=-1)
+				return false;
 		}
-		if (EndPointDomain.toLowerCase().indexOf("192.168") != -1) {
-			flag = false;
-		}
-		if (EndPointDomain.toLowerCase().indexOf("xxx") != -1) {
-			flag = false;
-		}
-		if (EndPointDomain.toLowerCase().indexOf("127.0.0.1") != -1) {
-			flag = false;
-		}
-		if (EndPointDomain.toLowerCase().indexOf(".") == -1) {
-			flag = false;
-		}
-		return flag;
+		return true;
 	}
 
 	public static void WriteMapToFile(HashMap<String, String> map,
