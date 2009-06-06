@@ -44,6 +44,7 @@ public class WebServiceGraph {
 		return d;
 	}
 	
+	public int[][] matrix = null;
 	public int[][] makeMatrix() {
 		int[][] matrix = new int[graph.size()][];
 		for (int i = 0; i < matrix.length; i ++)
@@ -51,8 +52,10 @@ public class WebServiceGraph {
 		
 		for (int i = 0; i < graph.size(); i ++) {
 			ArrayList<Integer> edges = graph.get(i);
-			for (int j = 0; j < edges.size(); j ++)
-				matrix[i][j] += 1;
+			for (int j = 0; j < edges.size(); j ++) {
+				matrix[i][edges.get(j)] += 1;
+			}
+			break;
 		}
 		
 		return matrix;
@@ -163,6 +166,19 @@ public class WebServiceGraph {
 		graph.get(srcId).add(dstId);
 	}
 	
+	public ArrayList<String> getOutput(String src) {
+		int id = this.urlId.get(src);
+		if (this.matrix == null)
+			this.matrix = makeMatrix();
+		ArrayList<String> result = new ArrayList<String>();
+		for (int j = 0; j < this.matrix[id].length; j ++) {
+			if (this.matrix[id][j] != 0) {
+				result.add(this.idUrl.get(j));
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -173,6 +189,14 @@ public class WebServiceGraph {
 		
 		int[][] matrix = graph.makeMatrix();
 		double[] d = graph.calculateD();
+		
+		String src = graph.idUrl.get(0);
+		ArrayList<String> dsts = graph.getOutput(src);
+		for (String dst : dsts) {
+			System.out.println("src: " + src + " -> dst: " + dst);
+		}
+		
+		graph.saveGraph("data/abc.txt");
 	}
 
 }
