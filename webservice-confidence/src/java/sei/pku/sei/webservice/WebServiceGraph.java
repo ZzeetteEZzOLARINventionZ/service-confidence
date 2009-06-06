@@ -1,6 +1,7 @@
 package sei.pku.sei.webservice;
 
 import java.util.*;
+import java.io.*;
 
 public class WebServiceGraph {
 	
@@ -8,6 +9,20 @@ public class WebServiceGraph {
 	public Map<String, Integer> urlId;
 	
 	public ArrayList<ArrayList<Integer> > graph;
+	
+	public void saveGraph(String file) throws Exception {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		for (int i = 0; i < graph.size(); i ++) {
+			String line = "" + i + ":\t";
+			ArrayList<Integer> edges = new ArrayList<Integer>();
+			for (int j = 0; j < edges.size(); j ++)
+				line = line + edges.get(i) + "\t";
+			writer.write(line);
+			writer.newLine();
+			
+		}
+		writer.close();
+	}
 	
 	
 	public WebServiceGraph() {
@@ -17,6 +32,8 @@ public class WebServiceGraph {
 	}
 	
 	public void addNode(String node) {
+		if (urlId.containsKey(node))
+			return;
 		idUrl.put(graph.size(), node);
 		urlId.put(node, graph.size());
 		graph.add(new ArrayList<Integer>());
@@ -44,6 +61,34 @@ public class WebServiceGraph {
 		BacklinkMap couldNotBacklink = new BacklinkMap(allServiceId);
 		couldNotBacklink.loadNotHasIdFile("不能下载下文件的wsdlURL的backlinkFile.txt");
 		
+		WebServiceGraph graph = new WebServiceGraph();
+		
+		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
+			String id = pair.getKey();
+			String wsdlFile = "---/" + id + ".wsdl";
+			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
+			String url = pair.getValue();
+			String domain = WsdlFile.getDomain(url);
+			ArrayList<String> backlinks = null;
+			if (notAvailServiceId.idUrl.containsKey(id))
+				backlinks = couldNotBacklink.urlBacklink.get(url);
+			else
+				backlinks = couldBacklink.urlBacklink.get(url);
+			
+			graph.addNode("D_" + domain);
+			for (String endpoint : endpoints) {
+				graph.addNode("P_" + endpoint);
+				graph.addEdge("P_" + endpoint, "D_" + domain);
+			}
+			for (String backlink : backlinks) {
+				graph.addNode("B_" + backlink);
+				graph.addEdge("D_" + domain, "B_" + backlink);
+			}
+			
+			graph.saveGraph("data/graph.txt");
+			
+			
+		}
 		
 	}
 
