@@ -82,26 +82,11 @@ public class WebServiceGraph {
 				 return false;
 			 }
 		 });
+		
+		init();
 	}
 	
-	public void addNode(String node) {
-		if (urlId.containsKey(node))
-			return;
-		urlId.put(node, graph.size());
-		graph.add(new ArrayList<Integer>());
-		idUrl.add(node);
-	}
-	
-	public void addEdge(String src, String dst) {
-		int srcId = urlId.get(src);
-		int dstId = urlId.get(dst);
-		graph.get(srcId).add(dstId);
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws Exception {
+	public void init() throws Exception {
 		ServiceIdMap allServiceId = new ServiceIdMap("data/CrawledWSUrlFileNew_所有的wsdl url.txt");
 		ServiceIdMap notAvailServiceId = new ServiceIdMap("data/不能下载文件的wsdl_URL.txt");
 		BacklinkMap couldBacklink = new BacklinkMap(allServiceId);
@@ -109,8 +94,6 @@ public class WebServiceGraph {
 		
 		BacklinkMap couldNotBacklink = new BacklinkMap(allServiceId);
 		couldNotBacklink.loadNotHasIdFile("data/不能下载下文件的wsdlURL的backlinkFile.txt");
-		
-		WebServiceGraph graph = new WebServiceGraph();
 		
 		int error1Count = 0;
 		System.out.println(allServiceId.idUrl.size());
@@ -135,21 +118,21 @@ public class WebServiceGraph {
 					error1Count ++;
 				}
 			}
-			graph.addNode("D_" + domain);
-			graph.dHost.add(domain, wsdlFile);
+			this.addNode("D_" + domain);
+			this.dHost.add(domain, wsdlFile);
 			// System.out.println("\tsfdsadfasfasf");
 			
 			for (String endpoint : endpoints) {
 				if (WsdlFile.isEndpointValid(endpoint)) {
-					graph.addNode("E_" + WsdlFile.getDomain(endpoint));
-					graph.addEdge("E_" + WsdlFile.getDomain(endpoint), "D_" + domain);
-					graph.dEndpoint.add(WsdlFile.getDomain(endpoint), endpoint);
+					this.addNode("E_" + WsdlFile.getDomain(endpoint));
+					this.addEdge("E_" + WsdlFile.getDomain(endpoint), "D_" + domain);
+					this.dEndpoint.add(WsdlFile.getDomain(endpoint), endpoint);
 				}
 			}
 			for (String backlink : backlinks) {
-				graph.addNode("B_" + backlink);
-				graph.addEdge("D_" + domain, "B_" + backlink);
-				graph.dBacklink.add(backlink, "download");
+				this.addNode("B_" + backlink);
+				this.addEdge("D_" + domain, "B_" + backlink);
+				this.dBacklink.add(backlink, "download");
 			}
 			
 		}
@@ -159,15 +142,37 @@ public class WebServiceGraph {
 		for (Map.Entry<String, ArrayList<String>> pair : couldNotBacklink.urlBacklink.entrySet()) {
 			ArrayList<String> backlinks = pair.getValue();
 			for (String backlink : backlinks) {
-				graph.dBacklink.add(backlink, "notDownload");
+				this.dBacklink.add(backlink, "notDownload");
 			}
 		}
 		
 		// graph.saveGraph("data/graph.txt");
+	}
+	
+	public void addNode(String node) {
+		if (urlId.containsKey(node))
+			return;
+		urlId.put(node, graph.size());
+		graph.add(new ArrayList<Integer>());
+		idUrl.add(node);
+	}
+	
+	public void addEdge(String src, String dst) {
+		int srcId = urlId.get(src);
+		int dstId = urlId.get(dst);
+		graph.get(srcId).add(dstId);
+	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) throws Exception {
+		WebServiceGraph graph = new WebServiceGraph();
+		
 		System.out.println("make matrix");
+		
 		int[][] matrix = graph.makeMatrix();
 		double[] d = graph.calculateD();
-		// System.out.println("在有backlink里和没有backlink里都找不到的url的个数：" + error1Count);
 	}
 
 }
