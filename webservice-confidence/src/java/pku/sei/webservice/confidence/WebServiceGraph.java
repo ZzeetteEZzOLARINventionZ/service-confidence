@@ -118,7 +118,9 @@ public class WebServiceGraph {
 			}
 			
 		}
-		graph.saveGraph("data/graph.txt");
+		// graph.saveGraph("data/graph.txt");
+		int[][] matrix = graph.makeMatrix();
+		double[] d = graph.calculateD();
 		// System.out.println("在有backlink里和没有backlink里都找不到的url的个数：" + error1Count);
 	}
 

@@ -2,12 +2,12 @@ package pku.sei.webservice.confidence;
 
 import java.util.ArrayList;
 
+import pku.sei.webservice.DataAnalysis;
+
 public class WsdlFile {
 	//TODO implement it
 	public static ArrayList<String> getWSDLEndpoints(String file) throws Exception {
-		ArrayList<String> endpoints = new ArrayList<String>();
-		endpoints.add("google.com");
-		return endpoints;
+		return DataAnalysis.GetEndPoint(file);
 	}
 	
 	public static String getDomain(String url) {
