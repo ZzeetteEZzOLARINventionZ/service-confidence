@@ -9,7 +9,7 @@ public class ServiceIdMap {
 		List<List<String>> lines = FileUtil.readFile(file);
 		for (List<String> list : lines) {
 			idUrl.put(list.get(0), list.get(1));
-			idUrl.put(list.get(1), list.get(0));
+			urlId.put(list.get(1), list.get(0));
 		}
 	}
 }

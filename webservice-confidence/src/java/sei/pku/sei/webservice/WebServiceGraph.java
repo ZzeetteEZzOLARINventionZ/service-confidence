@@ -63,18 +63,24 @@ public class WebServiceGraph {
 		
 		WebServiceGraph graph = new WebServiceGraph();
 		
+		int error1Count = 0;
 		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
 			String id = pair.getKey();
 			String wsdlFile = "data/AllFile/" + id + ".wsdl";
 			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
 			String url = pair.getValue();
 			String domain = WsdlFile.getDomain(url);
-			ArrayList<String> backlinks = null;
-			if (notAvailServiceId.idUrl.containsKey(id))
-				backlinks = couldNotBacklink.urlBacklink.get(url);
-			else
+			ArrayList<String> backlinks = new ArrayList<String>();
+			System.out.println(id);
+			System.out.println(url);
+			if (!notAvailServiceId.idUrl.containsKey(id)) {
 				backlinks = couldBacklink.urlBacklink.get(url);
-			
+				if (backlinks == null) {
+					// System.err.println("error:\t" + url);
+					backlinks = new ArrayList<String> ();
+					error1Count ++;
+				}
+			}
 			graph.addNode("D_" + domain);
 			for (String endpoint : endpoints) {
 				graph.addNode("P_" + endpoint);
@@ -87,9 +93,8 @@ public class WebServiceGraph {
 			
 			graph.saveGraph("data/graph.txt");
 			
-			
 		}
-		
+		// System.out.println("在有backlink里和没有backlink里都找不到的url的个数：" + error1Count);
 	}
 
 }
