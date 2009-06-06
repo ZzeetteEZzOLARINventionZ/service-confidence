@@ -3,6 +3,7 @@ package sei.pku.sei.webservice;
 import java.util.ArrayList;
 
 public class WsdlFile {
+	//TODO implement it
 	public static ArrayList<String> getWSDLEndpoints(String file) throws Exception {
 		ArrayList<String> endpoints = new ArrayList<String>();
 		endpoints.add("google.com");

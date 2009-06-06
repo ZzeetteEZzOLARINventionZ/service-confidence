@@ -5,10 +5,10 @@ import java.io.*;
 
 public class WebServiceGraph {
 	
-	public Map<Integer, String> idUrl;
 	public Map<String, Integer> urlId;
 	
 	public ArrayList<ArrayList<Integer> > graph;
+	public ArrayList<String> idUrl;
 	
 	public void saveGraph(String file) throws Exception {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -22,6 +22,21 @@ public class WebServiceGraph {
 			
 		}
 		writer.close();
+	}
+	
+	//TODO implement it
+	public double[] calculateD() {
+		double[] d = new double[graph.size()];
+		for (int i = 0; i < graph.size(); i ++) {
+			String s = idUrl.get(i);
+			if (s.startsWith("E_"))
+				;
+			else if (s.startsWith("D_"))
+				;
+			else if (s.startsWith("B_"))
+				;
+		}
+		return null;
 	}
 	
 	public int[][] makeMatrix() {
@@ -40,17 +55,17 @@ public class WebServiceGraph {
 	
 	
 	public WebServiceGraph() {
-		idUrl = new HashMap<Integer, String>();
 		urlId = new HashMap<String, Integer>();
 		graph = new ArrayList<ArrayList<Integer>>();
+		idUrl = new ArrayList<String>();
 	}
 	
 	public void addNode(String node) {
 		if (urlId.containsKey(node))
 			return;
-		idUrl.put(graph.size(), node);
 		urlId.put(node, graph.size());
 		graph.add(new ArrayList<Integer>());
+		idUrl.add(node);
 	}
 	
 	public void addEdge(String src, String dst) {
@@ -59,10 +74,6 @@ public class WebServiceGraph {
 		graph.get(srcId).add(dstId);
 	}
 	
-	
-	
-	
-
 	/**
 	 * @param args
 	 */
@@ -98,8 +109,8 @@ public class WebServiceGraph {
 			}
 			graph.addNode("D_" + domain);
 			for (String endpoint : endpoints) {
-				graph.addNode("P_" + endpoint);
-				graph.addEdge("P_" + endpoint, "D_" + domain);
+				graph.addNode("E_" + endpoint);
+				graph.addEdge("E_" + endpoint, "D_" + domain);
 			}
 			for (String backlink : backlinks) {
 				graph.addNode("B_" + backlink);
