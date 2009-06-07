@@ -122,10 +122,11 @@ public class WebServiceGraph {
 			// System.out.println("\tsfdsadfasfasf");
 			
 			for (String endpoint : endpoints) {
-				if (WsdlFile.isEndpointValid(endpoint)) {
-					this.addNode("E_" + WsdlFile.getDomain(endpoint));
-					this.addEdge("E_" + WsdlFile.getDomain(endpoint), "D_" + domain);
-					this.dEndpoint.add(WsdlFile.getDomain(endpoint), endpoint);
+				String domainName = WsdlFile.getDomain(endpoint);
+				if (WsdlFile.isEndpointValid(domainName)) {
+					this.addNode("E_" + domainName);
+					this.addEdge("E_" + domainName, "D_" + domain);
+					this.dEndpoint.add(domainName, endpoint);
 				}
 			}
 			for (String backlink : backlinks) {
