@@ -1,11 +1,17 @@
 package pku.sei.webservice.confidence;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 
 public class BufferedEndpointRule implements StatisticMap.Rule {
 	
 	public Map<String, String> status;
+	
+	public Map<String, String> newStatus = new HashMap<String, String>();//for 301,302
+	
+	public ArrayList<String> validList = new ArrayList<String>();
 	
 	public void loadBufferedInfo(File file) throws Exception {
 		List<List<String>> infos = FileUtil.readFile(file.getCanonicalPath());
@@ -29,11 +35,53 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 		File bufferFile = new File("data/endpoint.buffer.file.txt");
 		if (bufferFile.exists())
 			loadBufferedInfo(bufferFile);
+		
+		init301301();//for 301,302
+		
+		initValidList();//valid net status code
 	}
-
+	
+	public void initValidList() throws Exception{
+		BufferedReader br = new BufferedReader(new FileReader("data/validCode.txt"));
+		String line = null;
+		while((line=br.readLine())!=null){
+			validList.add(line.trim());
+		}
+		br.close();
+	}
+	public void init301301() throws Exception{
+		BufferedReader br = new BufferedReader(new FileReader("data/301302.txt"));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String[] ss = line.split("\t");
+			if(ss.length==2){
+				newStatus.put(ss[0], ss[1]);
+			}
+		}
+		br.close();
+	}
+	
+	public boolean isValid(String code){
+		return validList.contains(code);
+	}
+	
 	 public boolean accept(String s) {
-		 if (status.containsKey(s))
-			 return !"200".equals(status.get(s));
+		 if(s.equals("weather.gov")){
+			 System.out.println("weather");
+		 }
+		 if (status.containsKey(s)){
+			 String code = status.get(s);
+			 if(!("301".equals(code)||"302".equals(code))){
+				 return !isValid(code);
+			 }else{
+				code = newStatus.get(s);
+				if(code==null){
+					return true;//新文件中没有说明不可用
+				}else{
+					return !isValid(code);
+				}
+			 }
+		 }
 		 
 		 String sta = WsdlFile.getConnetedStatus(s);
 		 status.put(s, sta);
@@ -44,7 +92,7 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 				throw new RuntimeException(e);
 			}
 		 }
-		 return !"200".equals(sta);
+		 return !isValid(sta);
 	 }
 
 }

@@ -30,7 +30,7 @@ public class WebServiceGraph {
 		for (int i = 0; i < graph.size(); i ++) {
 			String s = idUrl.get(i);
 			String key = s.substring(2);
-			System.out.println(s);
+			////System.out.println(s);
 			if (s.startsWith("E_")) {
 				d[i] = dEndpoint.statistic(key);
 			}
@@ -74,13 +74,7 @@ public class WebServiceGraph {
 		
 		dHost = new StatisticMap(new CheckWsdlRule());
 		
-		dBacklink = new StatisticMap(new StatisticMap.Rule() {
-			 public boolean accept(String s) {
-				 if ("notDownload".equals(s))
-					 return true;
-				 return false;
-			 }
-		 });
+		dBacklink = new StatisticMap(new BackLinkRule());
 		
 		init();
 	}
@@ -95,20 +89,20 @@ public class WebServiceGraph {
 		couldNotBacklink.loadNotHasIdFile("data/不能下载下文件的wsdlURL的backlinkFile.txt");
 		
 		int error1Count = 0;
-		System.out.println(allServiceId.idUrl.size());
+		////System.out.println(allServiceId.idUrl.size());
 		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
 			String id = pair.getKey();
 			String wsdlFile = "data/AllFile/" + id + ".wsdl";
 			if (!new File(wsdlFile).exists())
 				continue;
-			System.out.println("wsdlFile:\t" + wsdlFile);
+			////System.out.println("wsdlFile:\t" + wsdlFile);
 			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
-			System.out.println("\tgeted endpoint");
+			////System.out.println("\tgeted endpoint");
 			String url = pair.getValue();
 			String domain = WsdlFile.getDomain(url);
 			ArrayList<String> backlinks = new ArrayList<String>();
-			// System.out.println(id);
-			// System.out.println(url);
+			// //System.out.println(id);
+			// //System.out.println(url);
 			if (!notAvailServiceId.idUrl.containsKey(id)) {
 				backlinks = couldBacklink.urlBacklink.get(url);
 				if (backlinks == null) {
@@ -119,7 +113,7 @@ public class WebServiceGraph {
 			}
 			this.addNode("D_" + domain);
 			this.dHost.add(domain, wsdlFile);
-			// System.out.println("\tsfdsadfasfasf");
+			// //System.out.println("\tsfdsadfasfasf");
 			
 			for (String endpoint : endpoints) {
 				String domainName = WsdlFile.getDomain(endpoint);
@@ -137,7 +131,7 @@ public class WebServiceGraph {
 			
 		}
 		
-		System.out.println("add other backlink");
+		////System.out.println("add other backlink");
 		//将没有下载下来wsdl的backlink加进去
 		for (Map.Entry<String, ArrayList<String>> pair : couldNotBacklink.urlBacklink.entrySet()) {
 			ArrayList<String> backlinks = pair.getValue();
@@ -182,18 +176,18 @@ public class WebServiceGraph {
 	public static void main(String[] args) throws Exception {
 		WebServiceGraph graph = new WebServiceGraph();
 		
-		System.out.println("make matrix");
+		////System.out.println("make matrix");
 		
 		int[][] matrix = graph.makeMatrix();
 		double[] d = graph.calculateD();
 		
-		String src = graph.idUrl.get(0);
-		ArrayList<String> dsts = graph.getOutput(src);
-		for (String dst : dsts) {
-			System.out.println("src: " + src + " -> dst: " + dst);
-		}
+		//String src = graph.idUrl.get(0);
+		//ArrayList<String> dsts = graph.getOutput(src);
+		//for (String dst : dsts) {
+			////System.out.println("src: " + src + " -> dst: " + dst);
+		//}
 		
-		graph.saveGraph("data/abc.txt");
+		//graph.saveGraph("data/abc.txt");
 	}
 
 }

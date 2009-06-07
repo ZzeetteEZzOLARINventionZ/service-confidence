@@ -61,6 +61,7 @@ public class ReputationRank{
 		for(int i = 0;i<size;i++){
 			for(int j = 0;j<size;j++){
 				if(outDegree[j]-0<0.0000001)
+					//t[i][j] = Math.sqrt(1.0/m.length);
 					t[i][j] = 1.0/m.length;
 				else
 					t[i][j] = Math.sqrt(m[j][i]/(double)outDegree[j]);
@@ -105,8 +106,8 @@ public class ReputationRank{
 			
 			//this.normalize(rank);
 			
-//			if(count>20)
-//				break;
+			if(count>20)
+				break;
 			if(canTerminate(old_rank,rank)){
 				//this.normalize(rank);
 				break;		

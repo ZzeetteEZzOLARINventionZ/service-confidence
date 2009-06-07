@@ -3,8 +3,11 @@ package pku.sei.webservice;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 import java.net.*;
+import java.nio.Buffer;
 public class DataAnalysis {
 
 	public static void Process() throws SecurityException, IOException {
@@ -28,7 +31,7 @@ public class DataAnalysis {
 			int idx1 = line.lastIndexOf("\\");
 			int idx2 = line.lastIndexOf(".wsdl");
 			String id = line.substring(idx1 + 1, idx2);
-			System.out.println(id);
+			//System.out.println(id);
 			String url = Hash.get(id);
 			FileOperation
 					.WriteToFileNew(
@@ -50,7 +53,7 @@ public class DataAnalysis {
 			int idx1 = line.lastIndexOf("\\");
 			int idx2 = line.lastIndexOf(".wsdl");
 			String id = line.substring(idx1 + 1, idx2);
-			System.out.println(id);
+			//System.out.println(id);
 			String EndPoint = Hash2.get(id);
 			if (EndPoint == null || IsValid(EndPoint) == false)
 				continue;
@@ -81,7 +84,7 @@ public class DataAnalysis {
 			String line = (String) vec.get(i);
 			String[] array = line.split("\t");
 			String id = array[0].trim();
-			System.out.println(id);
+			//System.out.println(id);
 			list.add(id);
 		}
 		String file2 = "D:\\Code program\\WSCrawler\\WSInfoData\\0316Expe\\ValidUrl.txt";
@@ -94,7 +97,7 @@ public class DataAnalysis {
 				count++;
 			}
 		}
-		System.out.println(count);
+		//System.out.println(count);
 	}
 
 	public static void Process1() throws SecurityException, IOException {
@@ -109,7 +112,7 @@ public class DataAnalysis {
 			int idx2 = line.lastIndexOf(".txt");
 			// int idx2 = line.lastIndexOf(".wsdl");
 			String id = line.substring(idx1 + 1, idx2);
-			System.out.println(id);
+			//System.out.println(id);
 			FileOperation
 					.WriteToFileNew(
 							"E:\\Code program\\WSCrawler\\WSInfoData\\0316Expe\\UpdateYear.txt",
@@ -385,7 +388,7 @@ public class DataAnalysis {
 
 		}
 		// System.out.println(list1.size());
-		System.out.println(mHash.size());
+		//System.out.println(mHash.size());
 
 		ArrayList<String> validList = new ArrayList<String>();
 		int number = 0;
@@ -423,7 +426,7 @@ public class DataAnalysis {
 			}
 			// Add localhost judgement
 		}
-		System.out.println(number);
+		//System.out.println(number);
 
 		Set<String> keys2 = Hash1.keySet();
 		Iterator ite2 = keys2.iterator();
@@ -477,9 +480,9 @@ public class DataAnalysis {
 		if (pos != -1) {
 
 			temp = temp.substring(pos);
-			System.out.println(temp);
+			//System.out.println(temp);
 			String str = GetConnect(temp);
-			System.out.println(str);
+			//System.out.println(str);
 			if (str.length() != 0) {
 				FileOperation.WriteToFileNew(ResultFile, str + "\r\n", true);
 				return true;
@@ -654,7 +657,7 @@ public class DataAnalysis {
 	 * @return
 	 */
 	public static boolean IsValid(String EndPointDomain) {
-		System.out.println("+++check:"+EndPointDomain);
+		//System.out.println("+++check:"+EndPointDomain);
 		if (EndPointDomain.trim().length() < 7) {
 			return false;
 		}
@@ -679,8 +682,8 @@ public class DataAnalysis {
 		
 		for (String end : invalidEndpoint) {
 			if(EndPointDomain.toLowerCase().trim().indexOf(end)!=-1){
-				System.out.println(end);
-				System.out.println("invalid");
+				//System.out.println(end);
+				//System.out.println("invalid");
 				return false;
 			}
 		}
@@ -796,7 +799,7 @@ public class DataAnalysis {
 			}
 		}
 
-		System.out.println(Hash.size());
+		//System.out.println(Hash.size());
 		Set<String> keys = Hash.keySet();
 
 		Iterator ite = keys.iterator();
@@ -828,6 +831,7 @@ public class DataAnalysis {
 			int pos_http = text.toLowerCase().indexOf("<http:address",start);
 			int pos_wsdlsoap = text.toLowerCase().indexOf("<wsdlsoap:address",start);
 			int pos_soap12 = text.toLowerCase().indexOf("<soap12:address",start);
+			int pos_soapenv = text.toLowerCase().indexOf("<soapenv:address",start);
 			int pos = Integer.MAX_VALUE;
 			if(pos_soap!=-1&&pos_soap<pos)
 				pos = pos_soap;
@@ -837,6 +841,8 @@ public class DataAnalysis {
 				pos = pos_wsdlsoap;
 			if(pos_soap12!=-1&&pos_soap12<pos)
 				pos = pos_soap12;
+			if(pos_soapenv!=-1&&pos_soapenv<pos)
+				pos = pos_soapenv;
 			if(pos==Integer.MAX_VALUE)
 				pos = -1;
 			if(pos == -1)
@@ -1055,9 +1061,39 @@ public class DataAnalysis {
 		 * System.out.println( DataAnalysis.GetEndPoint("E:\\Code
 		 * program\\WSCrawler\\WSInfoData\\AllFile\\558.wsdl"));
 		 */
-//		System.out
-//				.println(DataAnalysis
-//						.GetConnect("http://api.google.com/search/beta2"));
-		System.out.println(IsValid("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/soap_adapter.cgi"));
+		BufferedReader br = new BufferedReader(new FileReader("data/301302.txt"));
+		String line = null;
+		while((line=br.readLine())!=null){
+			String msg = DataAnalysis.GetConnect(line);
+			Pattern p = Pattern.compile("<a href=\"(.*)\">");
+			Matcher m = p.matcher(msg.toLowerCase());
+			String new_url = null;
+			if(m.find()){
+				new_url = m.group(1);				
+			}
+			if(new_url==null){
+				//String msg = "Location: https://adwords.google.com/api/adwords/v11/CriterionService\r\nx";
+				Pattern np = Pattern.compile("location:[\\s](.*)\\s");
+				Matcher nm = np.matcher(msg.toLowerCase());
+				if(nm.find()){
+					new_url = nm.group(1);	
+					//System.out.println(new_url);
+				}
+			}
+			if(new_url!=null){
+				//System.out.println("----URL:"+line+"\r\n----New URL:"+new_url);
+				String result = DataAnalysis.GetConnect(new_url);
+				if(result!=null&&result.length()>0){
+					//System.out.println(result);
+					Pattern cp = Pattern.compile("http/1.1\\s(\\d*)\\s.*");
+					Matcher cm = cp.matcher(result.toLowerCase());
+					if(cm.find()){
+						System.out.println(line+"\t"+cm.group(1));
+					}
+				}
+			}
+		}
+		
+//		System.out.println(IsValid("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/soap_adapter.cgi"));
 	}
 }
