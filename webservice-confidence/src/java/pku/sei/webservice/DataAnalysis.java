@@ -654,25 +654,35 @@ public class DataAnalysis {
 	 * @return
 	 */
 	public static boolean IsValid(String EndPointDomain) {
-		if (EndPointDomain.trim().length() == 0) {
+		System.out.println("+++check:"+EndPointDomain);
+		if (EndPointDomain.trim().length() < 7) {
 			return false;
 		}
-		if(EndPointDomain.indexOf('.')==-1)
+		if(EndPointDomain.trim().indexOf('.')==-1){
 			return false;
+		}
 		ArrayList<String> invalidEndpoint = new ArrayList<String>();
-		invalidEndpoint.add("localhost");
-		invalidEndpoint.add("127.0.0.1");
-		invalidEndpoint.add("192.168.");
-		invalidEndpoint.add("example.org");
-		invalidEndpoint.add("example.net");
-		invalidEndpoint.add("example.com");
-		invalidEndpoint.add("--- For physical URL please ask provider ---");
-		invalidEndpoint.add("0.0.0.0");
-		invalidEndpoint.add("your.server.com");
-		invalidEndpoint.add("xxx");
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("data/invalidEndPoint.txt"));
+			String line = null;
+			while((line=br.readLine())!=null){
+				invalidEndpoint.add(line);
+			}	
+			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		for (String end : invalidEndpoint) {
-			if(EndPointDomain.toLowerCase().trim().indexOf(end)!=-1)
+			if(EndPointDomain.toLowerCase().trim().indexOf(end)!=-1){
+				System.out.println(end);
+				System.out.println("invalid");
 				return false;
+			}
 		}
 		return true;
 	}
@@ -1048,9 +1058,6 @@ public class DataAnalysis {
 //		System.out
 //				.println(DataAnalysis
 //						.GetConnect("http://api.google.com/search/beta2"));
-		ArrayList<String> eps = DataAnalysis.GetEndPoint("G:\\小组工作\\web service可信性链接分析方法\\WSInfoData\\AllFile\\403.wsdl");
-		for (String ep : eps) {
-			System.out.println(ep);
-		}
+		System.out.println(IsValid("http://www.ncbi.nlm.nih.gov/entrez/eutils/soap/soap_adapter.cgi"));
 	}
 }
