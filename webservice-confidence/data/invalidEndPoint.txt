@@ -20,5 +20,4 @@ my.org
 ierc-lt:222
 a25:7001
 a00l006:50000
-1980s.fm
 [path to your glue code]
