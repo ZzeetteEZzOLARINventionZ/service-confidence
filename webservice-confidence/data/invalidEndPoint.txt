@@ -1,0 +1,24 @@
+localhost
+127.0.0.1
+192.168.
+example.org
+example.net
+example.com
+--- For physical URL please ask provider ---
+0.0.0.0
+your.server.com
+xxx
+yourhost
+yourhost.com
+your_machine
+your.domain
+texas:7001
+probdc3.www.aeat
+my.service:8080
+my.server.com
+my.org
+ierc-lt:222
+a25:7001
+a00l006:50000
+1980s.fm
+[path to your glue code]
