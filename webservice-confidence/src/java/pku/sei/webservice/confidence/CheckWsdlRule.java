@@ -3,16 +3,12 @@ package pku.sei.webservice.confidence;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import pku.sei.webservice.DataAnalysis;
-import sun.font.EAttribute;
 
 public class CheckWsdlRule implements StatisticMap.Rule {
 	
