@@ -1,10 +1,14 @@
 package pku.sei.webservice;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.*;
-import java.net.*;
 
 public class GetNetStatus {
 	public static String GetConnectGet(String strUrl){
@@ -55,9 +59,11 @@ public class GetNetStatus {
 				message += new String(buffer, 0, ret);
 
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("**************************");
+		} catch(UnknownHostException e){
+			return "UnknownHostException";
+		}catch (IOException e) {
+			//e.printStackTrace();
+			//System.out.println("**************************");
 
 		}
 		// System.out.println(message);
@@ -126,9 +132,11 @@ public class GetNetStatus {
 				message += new String(buffer, 0, ret);
 
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("**************************");
+		} catch(UnknownHostException e){
+			return "UnknownHostException";
+		}catch (IOException e) {
+			//e.printStackTrace();
+			//System.out.println("**************************");
 
 		}
 		// System.out.println(message);
@@ -156,7 +164,7 @@ public class GetNetStatus {
 	public static String getStatus(String line, int type){
 		if(type==1){
 			String msg = GetNetStatus.GetConnect(line);
-			System.out.println(msg);
+			//System.out.println(msg);
 			String msg_code = new GetNetStatus().getCode(msg);
 			if(msg_code == null)
 				return null;
@@ -232,7 +240,7 @@ public class GetNetStatus {
 			IOException {
 //		BufferedReader br = new BufferedReader(new FileReader("C:/data/urlList.txt"));
 //		PrintWriter pw = new PrintWriter(new FileWriter("C:/data/netStatus.txt"));
-		String line = "http://b2bportal.fujitsu-siemens.com:81/soap/fscRPC";
+		String line = "http://www.webservicex.net/WeatherForecast.asmx";
 		String code = null;
 		int count = 0;
 //		while((line=br.readLine())!=null){
