@@ -3,17 +3,22 @@ package pku.sei.webservice.confidence;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import pku.sei.webservice.DataAnalysis;
+import sun.font.EAttribute;
 
 public class CheckWsdlRule implements StatisticMap.Rule {
 	
 	private HashMap<String, ArrayList<String>> wsdl_end = new HashMap<String, ArrayList<String>>();
 	//private ArrayList<String> endlist = new ArrayList<String>();
+	BufferedEndpointRule ber = new BufferedEndpointRule();//算法2
 	public CheckWsdlRule(){
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("data/endpoints-buffer.txt"));
@@ -56,7 +61,7 @@ public class CheckWsdlRule implements StatisticMap.Rule {
 	/**
 	 * @param file
 	 *            待验证的wsdl的文件路径
-	 * @return true 如果wsdl是不合法的 false 如果wsdl是合法的
+	 * @return false如果wsdl是不合法的  true 如果wsdl是合法的
 	 */
 	public boolean accept(String file) {
 		try {
@@ -87,7 +92,10 @@ public class CheckWsdlRule implements StatisticMap.Rule {
 					int i = 0;
 					for (i = 0;i<endPoints.size();i++) {
 						if(WsdlFile.isEndpointValid(WsdlFile.getDomain(endPoints.get(i)))){
-							break;
+							if(ber.accept(endPoints.get(i))){//算法2
+								tag = true;//合法
+								break;
+							}//算法2
 						}
 					}
 					if(i == endPoints.size()){
@@ -97,14 +105,14 @@ public class CheckWsdlRule implements StatisticMap.Rule {
 					tag = false;
 				}
 			}
-			if (!tag);
+			//if (!tag);
 				//System.out.println("invalid wsdl file:" + file + "\r\n    "+ line);
-			return !tag;
+			return tag;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return true;
+			return false;
 		}
 	}
 	public static void main(String[] args){
