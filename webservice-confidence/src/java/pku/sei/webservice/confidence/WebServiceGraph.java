@@ -3,6 +3,8 @@ package pku.sei.webservice.confidence;
 import java.util.*;
 import java.io.*;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 public class WebServiceGraph {
 	
 	public Map<String, Integer> urlId;
@@ -45,17 +47,22 @@ public class WebServiceGraph {
 	}
 	
 	public int[][] matrix = null;
+	
 	public int[][] makeMatrix() {
-		int[][] matrix = new int[graph.size()][];
+		matrix = new int[graph.size()][];
 		for (int i = 0; i < matrix.length; i ++)
 			matrix[i] = new int[graph.size()];
 		
 		for (int i = 0; i < graph.size(); i ++) {
+//			System.out.println(i);
 			ArrayList<Integer> edges = graph.get(i);
+//			if(i==198){
+//				System.out.println("hello");
+//			}
 			for (int j = 0; j < edges.size(); j ++) {
 				matrix[i][edges.get(j)] += 1;
 			}
-			break;
+			//break;
 		}
 		
 		return matrix;
@@ -126,7 +133,8 @@ public class WebServiceGraph {
 			for (String backlink : backlinks) {
 				this.addNode("B_" + WsdlFile.getDomain(backlink));
 				this.addEdge("D_" + domain, "B_" + WsdlFile.getDomain(backlink));
-				this.dBacklink.add(WsdlFile.getDomain(backlink), "download");
+				//this.dBacklink.add(WsdlFile.getDomain(backlink), "download");
+				this.dBacklink.add(WsdlFile.getDomain(backlink), wsdlFile);//Ëã·¨2
 			}
 			
 		}
@@ -173,21 +181,29 @@ public class WebServiceGraph {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception {
-		WebServiceGraph graph = new WebServiceGraph();
+	public static void main(String[] args){
+		try{
+			WebServiceGraph graph = new WebServiceGraph();
+			
+			int[][] matrix = graph.makeMatrix();
+			double[] d = graph.calculateD();
+			
+//			String e_start = "E_www.webservicex.net";
+//			ArrayList<String> list = graph.getOutput(e_start);
+//			System.out.println(e_start);
+//			for (String s : list) {
+//				System.out.println("\t"+s);
+//				ArrayList<String> dlist = graph.getOutput(s);
+//				for (String ss : dlist) {
+//					System.out.println("\t\t"+ss);
+//				}				
+//			}
+			
+			graph.saveGraph("data/abc.txt");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
-		////System.out.println("make matrix");
-		
-		int[][] matrix = graph.makeMatrix();
-		double[] d = graph.calculateD();
-		
-		//String src = graph.idUrl.get(0);
-		//ArrayList<String> dsts = graph.getOutput(src);
-		//for (String dst : dsts) {
-			////System.out.println("src: " + src + " -> dst: " + dst);
-		//}
-		
-		//graph.saveGraph("data/abc.txt");
 	}
 
 }

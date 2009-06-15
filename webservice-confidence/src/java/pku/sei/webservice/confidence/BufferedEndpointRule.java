@@ -30,15 +30,19 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 		writer.close();
 	}
 	
-	public BufferedEndpointRule() throws Exception{
-		status = new HashMap<String, String>();
-		File bufferFile = new File("data/endpoint.buffer.file.txt");
-		if (bufferFile.exists())
-			loadBufferedInfo(bufferFile);
-		
-		init301301();//for 301,302
-		
-		initValidList();//valid net status code
+	public BufferedEndpointRule(){
+		try{
+			status = new HashMap<String, String>();
+			File bufferFile = new File("data/endpoint.buffer.file.txt");
+			if (bufferFile.exists())
+				loadBufferedInfo(bufferFile);
+			
+			init301301();//for 301,302
+			
+			initValidList();//valid net status code
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
 	}
 	
 	public void initValidList() throws Exception{
@@ -66,19 +70,16 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 	}
 	
 	 public boolean accept(String s) {
-		 if(s.equals("weather.gov")){
-			 System.out.println("weather");
-		 }
 		 if (status.containsKey(s)){
 			 String code = status.get(s);
 			 if(!("301".equals(code)||"302".equals(code))){
-				 return !isValid(code);
+				 return isValid(code);
 			 }else{
 				code = newStatus.get(s);
 				if(code==null){
-					return true;//新文件中没有说明不可用
+					return false;//新文件中没有说明不可用
 				}else{
-					return !isValid(code);
+					return isValid(code);
 				}
 			 }
 		 }
@@ -92,7 +93,7 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 				throw new RuntimeException(e);
 			}
 		 }
-		 return !isValid(sta);
+		 return isValid(sta);
 	 }
 
 }

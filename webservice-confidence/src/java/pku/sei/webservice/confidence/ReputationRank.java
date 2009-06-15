@@ -60,9 +60,12 @@ public class ReputationRank{
 		
 		for(int i = 0;i<size;i++){
 			for(int j = 0;j<size;j++){
-				if(outDegree[j]-0<0.0000001)
+//				if(i==197&&j==198){
+//					System.out.println(m[j][i]+" "+outDegree[j]);
+//				}
+				if(outDegree[j]-0<0.0000001);
 					//t[i][j] = Math.sqrt(1.0/m.length);
-					t[i][j] = 1.0/m.length;
+					//t[i][j] = 1.0/m.length;
 				else
 					t[i][j] = Math.sqrt(m[j][i]/(double)outDegree[j]);
 			}
@@ -84,13 +87,19 @@ public class ReputationRank{
 	public void run()
 	{
 		int count = 0;
-		//this.normalize(rank);
+		this.normalize(rank);
 		while(true){
-			System.out.println("----------------"+count++);
+			//System.out.println("----------------"+count++);
 			//double[] tempArr = (double[])rank.clone();
 			for(int i = 0;i<rank.length;i++){
+				if(i==197){
+					System.out.println("hello");
+				}
 				double temp = 0;
 				for(int j = 0;j<rank.length;j++){
+					if(i==197&&j==198){
+						System.out.println(T[i][j]);
+					}
 					temp += T[i][j]*old_rank[j];
 				}
 				temp *= alpha;
@@ -99,17 +108,17 @@ public class ReputationRank{
 				
 				rank[i] = temp;
 				
-				if(Math.abs(rank[i]-old_rank[i])>0.0000000001){
-					System.out.println(i+"----"+rank[i]+"-----"+old_rank);
-				}
+//				if(Math.abs(rank[i]-old_rank[i])>0.0000000001){
+//					System.out.println(i+"----"+rank[i]+"-----"+old_rank);
+//				}
 			}					
 			
-			//this.normalize(rank);
-			
-			if(count>20)
-				break;
+			this.normalize(rank);
+//			
+//			if(count>20)
+//				break;
 			if(canTerminate(old_rank,rank)){
-				//this.normalize(rank);
+				this.normalize(rank);
 				break;		
 			}
 			old_rank = (double[])rank.clone();

@@ -16,7 +16,7 @@ public class StatisticMap {
 	public StatisticMap(Rule rule) throws Exception {
 		this.map = new HashMap<String, ArrayList<String>>();
 		this.rule = rule;
-		pw = new PrintWriter(new FileWriter("data/d.txt"));
+		//pw = new PrintWriter(new FileWriter("data/d.txt"));
 	}
 	
 	public void add(String key, String value) {
@@ -45,7 +45,8 @@ public class StatisticMap {
 		}else if(rule instanceof BackLinkRule){
 			System.out.println("B_"+key+"\t"+num+"\t"+values.size());
 		}
-		pw.flush();
-		return num / values.size();
+//		pw.flush();
+		//return num / values.size();
+		return (1- num / values.size());//reliability
 	}
 }
