@@ -4,7 +4,6 @@ import java.util.*;
 import java.io.*;
 
 public class FileLineMap {
-	
 	public static Map<String, String> loadFileMap(String file) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -14,6 +13,18 @@ public class FileLineMap {
 			String key = st.nextToken();
 			String value = st.nextToken();
 			results.put(key, value);
+		}
+		reader.close();
+		return results;
+		
+	}
+	
+	public static Set<String> loadFileSet(String file) throws Exception {
+		Set<String> results = new HashSet<String>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			results.add(line);
 		}
 		reader.close();
 		return results;
@@ -83,6 +94,12 @@ public class FileLineMap {
 		Map<String, Set<String>> wsdlEndpoints = loadFileMapSet("data2/WSDLid_endPointList.txt");
 		endpointNumberCount(wsdlEndpoints);
 		accrossCount(wsdls, wsdlEndpoints);
+		
+
+		Set<String> invalidEndpoints = loadFileSet("data2/invalidEndPointList.txt");
+		
+		//统计合法的endpoint的情况
+		accrossValidCount(wsdls, wsdlEndpoints, invalidEndpoints);
 		// printSuffix("data2/allWsdlFile.txt");
 
 	}
@@ -132,8 +149,56 @@ public class FileLineMap {
 		System.out.println("wsdl的site属于wsdl的endpoint的site的个数:\t" + inSiteCount);
 		System.out.println("wsdl的endpoint只有1个且和wsdl都是同一个site的个数:\t" + sameSiteCount);
 		System.out.println("-------------------------------------------");
+	}
+	
+	public static void accrossValidCount(Map<String, String> wsdls,
+			Map<String, Set<String>> wsdlEndpoints, Set<String> invalidEndpoints) {
 		
+		/** 
+		 * 将不合法的endpoint去掉，不统计
+		 */
 		
+		int differentSiteCount = 0;
+		int inSiteCount = 0;
+		int sameSiteCount = 0;
+		
+		Set<String> countSite = new HashSet<String> ();
+		for (Map.Entry<String, Set<String>> item : wsdlEndpoints.entrySet()) {
+			Iterator<String> iter = item.getValue().iterator();
+			while (iter.hasNext()) {
+				String s = null;
+				String n = iter.next();
+				if (invalidEndpoints.contains(n))
+					continue;
+				s = getSiteFromUrl(n);
+				countSite.add(s);
+			}
+			String wsdl = wsdls.get(item.getKey());
+			String site = getSiteFromUrl(wsdl);
+			if (countSite.contains(site))
+				inSiteCount ++;
+			else if (countSite.size() > 0){
+				differentSiteCount ++;
+				// XXX 去掉注释可以看不一样的wsdl的site和endpoint的site
+//				System.out.println("wsdl:\t" + wsdl);
+//				for (String s : item.getValue()) {
+//					System.out.println("epoint:\t" + s);
+//				}
+			}
+			
+			if (countSite.contains(site) && countSite.size() == 1)
+				sameSiteCount ++;
+			
+			countSite.clear();
+		}
+		
+		System.out.println();
+		System.out.println("-------------------------------------------");
+		System.out.println("以下的结果中只计算了合法的wsdl");
+		System.out.println("含有endpoint，且wsdl的site不属于wsdl的endpoint的site的个数:\t" + differentSiteCount);
+		System.out.println("wsdl的site属于wsdl的endpoint的site的个数:\t" + inSiteCount);
+		System.out.println("wsdl的endpoint只有1个且和wsdl都是同一个site的个数:\t" + sameSiteCount);
+		System.out.println("-------------------------------------------");
 	}
 
 	public static void endpointNumberCount(Map<String, Set<String>> wsdlEndpoints){
