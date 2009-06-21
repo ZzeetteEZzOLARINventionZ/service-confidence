@@ -4,18 +4,6 @@ import java.util.*;
 import java.io.*;
 
 public class FileLineMap {
-
-	public static String[] suffix = {".edu", ".com", ".net", ".org", ".gov", ".au", ".at", ".it",
-		".ru", ".us", ".st", ".se", ".ca", ".de", ".info"};
-	
-	public static boolean checkSuffix(String line) {
-		for (String s : suffix) {
-			if (line.endsWith(s))
-				return true;
-		}
-		return false;
-	}
-
 	
 	public static Map<String, String> loadFileMap(String file) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
@@ -73,23 +61,6 @@ public class FileLineMap {
 		}
 		return site;
 	}
-
-	public static void printSuffix(String file) throws Exception {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			int beginIndex = line.indexOf("://") + 3;
-			int endIndex = line.indexOf(':', beginIndex);
-			if (endIndex < 0)
-				endIndex = line.indexOf("/", beginIndex); 
-			if (endIndex < 0)
-				endIndex = line.length();
-			String domain = line.substring(beginIndex, endIndex);
-			if (!checkSuffix(domain))
-				System.out.println(domain);
-		}
-		reader.close();
-	}
 	
 	/**
 	 * @param args
@@ -143,10 +114,11 @@ public class FileLineMap {
 				inSiteCount ++;
 			else if (countSite.size() > 0){
 				differentSiteCount ++;
-				System.out.println("wsdl:\t" + wsdl);
-				for (String s : item.getValue()) {
-					System.out.println("epoint:\t" + s);
-				}
+				// XXX 去掉注释可以看不一样的wsdl的site和endpoint的site
+//				System.out.println("wsdl:\t" + wsdl);
+//				for (String s : item.getValue()) {
+//					System.out.println("epoint:\t" + s);
+//				}
 			}
 			
 			if (countSite.contains(site) && countSite.size() == 1)
