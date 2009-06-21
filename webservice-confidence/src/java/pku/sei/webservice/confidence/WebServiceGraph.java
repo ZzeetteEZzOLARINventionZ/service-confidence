@@ -3,9 +3,20 @@ package pku.sei.webservice.confidence;
 import java.util.*;
 import java.io.*;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 public class WebServiceGraph {
+	public static int[][] reverseMatrix(int[][] matrix) {
+		int length = matrix.length;
+		int width = matrix[0].length;
+		int[][] result = new int[width][];
+		for (int i = 0; i < width; i ++)
+			matrix[i] = new int[length];
+		
+		for (int i = 0; i < width; i ++) {
+			for (int j = 0; j < length; j ++)
+				result[i][j] = matrix[j][i];
+		}
+		return result;
+	}
 	
 	public Map<String, Integer> urlId;
 	
@@ -25,6 +36,7 @@ public class WebServiceGraph {
 		}
 		writer.close();
 	}
+	
 	
 	//TODO implement it
 	public double[] calculateD() {
@@ -72,38 +84,47 @@ public class WebServiceGraph {
 	public StatisticMap dHost;
 	public StatisticMap dBacklink;
 	
-	public WebServiceGraph() throws Exception {
+	public String allServiceIdFile;
+	public String notAvailServiceIdFile;
+	public String couldDonwnloadWsdlBacklinkFile;
+	public String notDownloadWsdlBacklinkFile;
+	
+	public WebServiceGraph(String allServiceIdFile, String notAvailServiceIdFile, 
+			String couldDownoadWsdlBacklinkFile, String notDownloadWsdlBacklinkFile) throws Exception {
+		this.allServiceIdFile = allServiceIdFile;
+		this.notAvailServiceIdFile = notAvailServiceIdFile;
+		this.couldDonwnloadWsdlBacklinkFile = couldDownoadWsdlBacklinkFile;
+		this.notDownloadWsdlBacklinkFile = notAvailServiceIdFile;
+		
 		urlId = new HashMap<String, Integer>();
 		graph = new ArrayList<ArrayList<Integer>>();
 		idUrl = new ArrayList<String>();
 		
 		dEndpoint = new StatisticMap(new BufferedEndpointRule());
-		
 		dHost = new StatisticMap(new CheckWsdlRule());
-		
 		dBacklink = new StatisticMap(new BackLinkRule());
 		
 		init();
 	}
 	
 	public void init() throws Exception {
-		ServiceIdMap allServiceId = new ServiceIdMap("data/CrawledWSUrlFileNew_所有的wsdl url.txt");
-		ServiceIdMap notAvailServiceId = new ServiceIdMap("data/不能下载文件的wsdl_URL.txt");
+		ServiceIdMap allServiceId = new ServiceIdMap(this.allServiceIdFile);	// "data/CrawledWSUrlFileNew_所有的wsdl url.txt"
+		ServiceIdMap notAvailServiceId = new ServiceIdMap(this.notAvailServiceIdFile);	// "data/不能下载文件的wsdl_URL.txt"
 		BacklinkMap couldBacklink = new BacklinkMap(allServiceId);
-		couldBacklink.loadHasIdFile("data/能下载下来文件的wsdlURL的backlink.txt");
+		couldBacklink.loadHasIdFile(this.couldDonwnloadWsdlBacklinkFile);	// "data/能下载下来文件的wsdlURL的backlink.txt"
 		
 		BacklinkMap couldNotBacklink = new BacklinkMap(allServiceId);
-		couldNotBacklink.loadNotHasIdFile("data/不能下载下文件的wsdlURL的backlinkFile.txt");
+		couldNotBacklink.loadNotHasIdFile(this.notDownloadWsdlBacklinkFile);	// "data/不能下载下文件的wsdlURL的backlinkFile.txt"
 		
 		int error1Count = 0;
 		////System.out.println(allServiceId.idUrl.size());
 		for (Map.Entry<String, String> pair : allServiceId.idUrl.entrySet()) {
 			String id = pair.getKey();
-			String wsdlFile = "data/AllFile/" + id + ".wsdl";
+			String wsdlFile = "data2/AllFile/" + id + ".wsdl";
 			if (!new File(wsdlFile).exists())
 				continue;
 			////System.out.println("wsdlFile:\t" + wsdlFile);
-			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile);
+			ArrayList<String> endpoints = WsdlFile.getWSDLEndpoints(wsdlFile, id);
 			////System.out.println("\tgeted endpoint");
 			String url = pair.getValue();
 			String domain = WsdlFile.getDomain(url);
@@ -183,7 +204,11 @@ public class WebServiceGraph {
 	 */
 	public static void main(String[] args){
 		try{
-			WebServiceGraph graph = new WebServiceGraph();
+			WebServiceGraph graph = new WebServiceGraph("data/CrawledWSUrlFileNew_所有的wsdl url.txt",
+					"data/不能下载文件的wsdl_URL.txt",
+					"data/能下载下来文件的wsdlURL的backlink.txt",
+					"data/不能下载下文件的wsdlURL的backlinkFile.txt"
+					);
 			
 			int[][] matrix = graph.makeMatrix();
 			double[] d = graph.calculateD();

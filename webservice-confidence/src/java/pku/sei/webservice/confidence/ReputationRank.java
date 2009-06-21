@@ -20,7 +20,10 @@ public class ReputationRank{
 	
 	public double[][] T;
 	
-	public WebServiceGraph graph = new WebServiceGraph();
+	public WebServiceGraph graph = new WebServiceGraph("data/CrawledWSUrlFileNew_所有的wsdl url.txt",
+			"data/不能下载文件的wsdl_URL.txt",
+			"data/能下载下来文件的wsdlURL的backlink.txt",
+			"data/不能下载下文件的wsdlURL的backlinkFile.txt");
 	
 	public ReputationRank() throws Exception
 	{
@@ -86,7 +89,7 @@ public class ReputationRank{
 	
 	public void run()
 	{
-		int count = 0;
+		// int count = 0;
 		this.normalize(rank);
 		while(true){
 			//System.out.println("----------------"+count++);

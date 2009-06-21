@@ -11,7 +11,8 @@ public class WsdlFile {
 	
 	static {
 		try {
-			if (new File("data/endpoints-buffer.txt").exists())
+			// if (new File("data/endpoints-buffer.txt").exists())
+			if (new File("data2/WSDLid_endPointList.txt").exists())
 				loadEndpoints();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -19,7 +20,7 @@ public class WsdlFile {
 	}
 	
 	public static void loadEndpoints() throws Exception {
-		List<List<String>> lines = FileUtil.readFile("data/endpoints-buffer.txt");
+		List<List<String>> lines = FileUtil.readFile("data2/WSDLid_endPointList.txt");
 		for (List<String> line : lines) {
 			if (line.size() <= 0)
 				return;
@@ -31,7 +32,7 @@ public class WsdlFile {
 	}
 	
 	public static void saveEndpoints() throws Exception {
-		BufferedWriter bw = new BufferedWriter(new FileWriter("data/endpoints-buffer.txt"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("data2/WSDLid_endPointList.txt"));
 		for (Map.Entry<String, ArrayList<String>> item : endpoints.entrySet()) {
 			String line = item.getKey() + "\t";
 			for (int i = 0; i < item.getValue().size(); i ++) {
@@ -43,11 +44,12 @@ public class WsdlFile {
 		bw.close();
 	}
 	
-	public static ArrayList<String> getWSDLEndpoints(String file) throws Exception {
-		if (endpoints.containsKey(file))
-			return endpoints.get(file);
+	public static ArrayList<String> getWSDLEndpoints(String file, String id) throws Exception {
+		if (endpoints.containsKey(id))
+			return endpoints.get(id);
+		// System.out.println(file);
 		ArrayList<String> e =  DataAnalysis.GetEndPoint(file);	// 那个里面好像有bug
-		endpoints.put(file, e);
+		endpoints.put(id, e);
 		if (endpoints.size() % 20 == 0)
 			saveEndpoints();
 		return e;

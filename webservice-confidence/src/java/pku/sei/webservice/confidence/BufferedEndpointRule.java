@@ -1,8 +1,6 @@
 package pku.sei.webservice.confidence;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.*;
 
 public class BufferedEndpointRule implements StatisticMap.Rule {
@@ -23,7 +21,8 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 	}
 	
 	public void saveInfo() throws Exception {
-		BufferedWriter writer = new BufferedWriter(new FileWriter("data/endpoint.buffer.file.txt"));
+		// BufferedWriter writer = new BufferedWriter(new FileWriter("data/endpoint.buffer.file.txt"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("data2/netStatus.txt"));
 		for (Map.Entry<String, String> item : status.entrySet()) {
 			writer.write(item.getKey() + "\t" + item.getValue() + "\n");
 		}
@@ -33,7 +32,8 @@ public class BufferedEndpointRule implements StatisticMap.Rule {
 	public BufferedEndpointRule(){
 		try{
 			status = new HashMap<String, String>();
-			File bufferFile = new File("data/endpoint.buffer.file.txt");
+			// File bufferFile = new File("data/endpoint.buffer.file.txt");
+			File bufferFile = new File("data2/netStatus.txt");
 			if (bufferFile.exists())
 				loadBufferedInfo(bufferFile);
 			
