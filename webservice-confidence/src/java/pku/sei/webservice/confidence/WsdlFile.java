@@ -73,7 +73,9 @@ public class WsdlFile {
 	
 	public static String getDomain(String url) {
 		int pos = url.indexOf("://") + 3;
-		int end = url.indexOf("/", pos);
+		int end = url.indexOf(':', pos);
+		if (end < 0)
+			end = url.indexOf("/", pos);
 		String site = null;
 		if (end == -1)
 			site = url.substring(pos);
