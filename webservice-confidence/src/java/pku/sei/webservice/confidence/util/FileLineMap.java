@@ -2,14 +2,19 @@ package pku.sei.webservice.confidence.util;
 
 import java.util.*;
 import java.io.*;
-import java.net.*;
 
 public class FileLineMap {
 
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = -6815434923486567619L;
+	public static String[] suffix = {".edu", ".com", ".net", ".org", ".gov", ".au", ".at", ".it",
+		".ru", ".us", ".st", ".se", ".ca", ".de", ".info"};
+	
+	public static boolean checkSuffix(String line) {
+		for (String s : suffix) {
+			if (line.endsWith(s))
+				return true;
+		}
+		return false;
+	}
 
 	
 	public static Map<String, String> loadFileMap(String file) throws Exception {
@@ -46,16 +51,45 @@ public class FileLineMap {
 	}
 	
 	public static String getSiteFromUrl(String s){
+		// System.out.println(s);
 		int start = s.indexOf("://");
 		int end = s.indexOf(':', start + 3);
+		String site = null;
 		if (end > start + 3)
-			return s.substring(0, end);
-		end = s.indexOf('/', start + 3);
+			site = s.substring(0, end);
 		if (end < 0)
-			return s;
-		return s.substring(0, end);
+			end = s.indexOf('/', start + 3);
+		if (end < 0)
+			site = s;
+		else
+			site = s.substring(0, end);
+		int c = 2;
+		for (int i = site.length() - 1; i >= 0; i --) {
+			if (site.charAt(i) == '.') {
+				c --;
+				if (c == 0)
+					return site.substring(i + 1);
+			}
+		}
+		return site;
 	}
 
+	public static void printSuffix(String file) throws Exception {
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			int beginIndex = line.indexOf("://") + 3;
+			int endIndex = line.indexOf(':', beginIndex);
+			if (endIndex < 0)
+				endIndex = line.indexOf("/", beginIndex); 
+			if (endIndex < 0)
+				endIndex = line.length();
+			String domain = line.substring(beginIndex, endIndex);
+			if (!checkSuffix(domain))
+				System.out.println(domain);
+		}
+		reader.close();
+	}
 	
 	/**
 	 * @param args
@@ -78,7 +112,7 @@ public class FileLineMap {
 		Map<String, Set<String>> wsdlEndpoints = loadFileMapSet("data2/WSDLid_endPointList.txt");
 		endpointNumberCount(wsdlEndpoints);
 		accrossCount(wsdls, wsdlEndpoints);
-		
+		// printSuffix("data2/allWsdlFile.txt");
 
 	}
 
@@ -109,10 +143,10 @@ public class FileLineMap {
 				inSiteCount ++;
 			else if (countSite.size() > 0){
 				differentSiteCount ++;
-//				System.out.println("wsdl:\t" + wsdl);
-//				for (String s : item.getValue()) {
-//					System.out.println("endpoint:\t" + s);
-//				}
+				System.out.println("wsdl:\t" + wsdl);
+				for (String s : item.getValue()) {
+					System.out.println("epoint:\t" + s);
+				}
 			}
 			
 			if (countSite.contains(site) && countSite.size() == 1)
