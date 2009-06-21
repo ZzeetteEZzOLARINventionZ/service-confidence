@@ -26,11 +26,11 @@ public class StatisticMap {
 	}
 	
 	public double statistic(String key) {
-		if(key.equals("weather.gov")){
-			//System.out.println("weather.gov");
-		}
+//		if(key.equals("weather.gov")){
+//			//System.out.println("weather.gov");
+//		}
 		ArrayList<String> values = map.get(key);
-		if (values == null)
+		// if (values == null)
 			////System.out.println(key);
 		if (values.size() == 0)
 			return 0.0;

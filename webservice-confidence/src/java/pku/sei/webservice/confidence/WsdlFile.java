@@ -74,10 +74,14 @@ public class WsdlFile {
 	public static String getDomain(String url) {
 		int pos = url.indexOf("://") + 3;
 		int end = url.indexOf("/", pos);
+		String site = null;
 		if (end == -1)
-			return url.substring(pos);
+			site = url.substring(pos);
 		else
-			return url.substring(pos, end);
+			site = url.substring(pos, end);
+		
+		// 忽略第一个'.'之前的部分
+		return site.substring(site.indexOf('.') + 1);
 	}
 }
 

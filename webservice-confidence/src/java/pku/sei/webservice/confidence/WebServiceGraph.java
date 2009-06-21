@@ -9,7 +9,7 @@ public class WebServiceGraph {
 		int width = matrix[0].length;
 		int[][] result = new int[width][];
 		for (int i = 0; i < width; i ++)
-			matrix[i] = new int[length];
+			result[i] = new int[length];
 		
 		for (int i = 0; i < width; i ++) {
 			for (int j = 0; j < length; j ++)
@@ -38,7 +38,6 @@ public class WebServiceGraph {
 	}
 	
 	
-	//TODO implement it
 	public double[] calculateD() {
 		double[] d = new double[graph.size()];
 		for (int i = 0; i < graph.size(); i ++) {
