@@ -46,7 +46,7 @@ public class StatisticMap {
 			System.out.println("B_"+key+"\t"+num+"\t"+values.size());
 		}
 //		pw.flush();
-		//return num / values.size();
-		return (1- num / values.size());//reliability
+		return num / values.size();
+		//return (1- num / values.size());//reliability
 	}
 }
