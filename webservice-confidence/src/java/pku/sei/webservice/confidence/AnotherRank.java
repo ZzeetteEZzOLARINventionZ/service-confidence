@@ -1,5 +1,6 @@
 package pku.sei.webservice.confidence;
 
+import java.io.*;
 import java.util.*;
 
 public class AnotherRank {
@@ -104,8 +105,12 @@ public class AnotherRank {
 		AnotherRank ar= new AnotherRank();
 		double d[] = ar.d;
 		System.out.println("----------------R A N K -------------------------");
+		PrintWriter writer = new PrintWriter(new FileWriter("data2/anotherRankResult.txt"));
 		for (Map.Entry<String, Integer> item : ar.graph.urlId.entrySet()) {
+			writer.println(item.getKey() + "\t" + d[item.getValue()]);
 			System.out.println(item.getKey() + "\t" + d[item.getValue()]);
 		}
+		writer.close();
+		System.out.println("ok");
 	}
 }
