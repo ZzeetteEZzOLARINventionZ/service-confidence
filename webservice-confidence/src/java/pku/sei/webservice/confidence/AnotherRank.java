@@ -51,7 +51,8 @@ public class AnotherRank {
 				int sumWeighted = 0;
 				for (int j = 0; j < width; j ++) {
 					sumWeighted += matrix[i][j];
-					hasInlink[j] = true;
+					if (matrix[i][j] > 0)
+						hasInlink[j] = true;
 				}
 				if (sumWeighted != 0) {
 					for (int j = 0; j < width; j ++) {
@@ -83,7 +84,8 @@ public class AnotherRank {
 				int sumWeighted = 0;
 				for (int j = 0; j < width; j ++) {
 					sumWeighted += matrix[i][j];
-					hasInlink[j] = true;
+					if (matrix[i][j] > 0)
+						hasInlink[j] = true;
 				}
 				if (sumWeighted != 0) {
 					for (int j = 0; j < width; j ++) {
