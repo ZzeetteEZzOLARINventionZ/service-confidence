@@ -55,7 +55,7 @@ public class AnotherRank {
 				}
 				if (sumWeighted != 0) {
 					for (int j = 0; j < width; j ++) {
-						addedValue[j] = belta * d[i] * matrix[i][j] / sumWeighted;
+						addedValue[j] = d[i] * matrix[i][j] / sumWeighted;
 					}
 				}
 			}
@@ -87,7 +87,7 @@ public class AnotherRank {
 				}
 				if (sumWeighted != 0) {
 					for (int j = 0; j < width; j ++) {
-						addedValue[j] = belta * d[i] * matrix[i][j] / sumWeighted;
+						addedValue[j] = d[i] * matrix[i][j] / sumWeighted;
 					}
 				}
 			}
