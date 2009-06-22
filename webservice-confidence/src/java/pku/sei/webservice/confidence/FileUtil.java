@@ -9,7 +9,7 @@ public class FileUtil {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
-			StringTokenizer st = new StringTokenizer(line, "\t");
+			StringTokenizer st = new StringTokenizer(line);	//, "\t"
 			List<String> array = new ArrayList<String> ();
 			while (st.hasMoreTokens()) {
 				array.add(st.nextToken());

@@ -15,8 +15,10 @@ public class BacklinkMap {
 			String id = list.get(0);
 			String url = urlIdMap.idUrl.get(id);
 			ArrayList<String> backlinks = new ArrayList<String> ();
-			for (int i = 1; i < list.size(); i ++)
+			for (int i = 1; i < list.size(); i ++) {
 				backlinks.add(list.get(i));
+			}
+			// System.out.println("Backlink url:\t" + url);
 			urlBacklink.put(url, backlinks);
 		}
 	}

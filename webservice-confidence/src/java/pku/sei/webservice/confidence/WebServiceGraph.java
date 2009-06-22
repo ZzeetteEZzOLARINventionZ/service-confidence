@@ -93,7 +93,7 @@ public class WebServiceGraph {
 		this.allServiceIdFile = allServiceIdFile;
 		this.notAvailServiceIdFile = notAvailServiceIdFile;
 		this.couldDonwnloadWsdlBacklinkFile = couldDownoadWsdlBacklinkFile;
-		this.notDownloadWsdlBacklinkFile = notAvailServiceIdFile;
+		this.notDownloadWsdlBacklinkFile = notDownloadWsdlBacklinkFile;
 		
 		urlId = new HashMap<String, Integer>();
 		graph = new ArrayList<ArrayList<Integer>>();
@@ -151,6 +151,7 @@ public class WebServiceGraph {
 				}
 			}
 			for (String backlink : backlinks) {
+				// System.out.println("WebsearviceGraph backlinks:\t" + backlink);
 				this.addNode("B_" + WsdlFile.getDomain(backlink));
 				this.addEdge("D_" + domain, "B_" + WsdlFile.getDomain(backlink));
 				//this.dBacklink.add(WsdlFile.getDomain(backlink), "download");
@@ -174,6 +175,7 @@ public class WebServiceGraph {
 	public void addNode(String node) {
 		if (urlId.containsKey(node))
 			return;
+		// System.out.println("addNode:\t" + node);
 		urlId.put(node, graph.size());
 		graph.add(new ArrayList<Integer>());
 		idUrl.add(node);
