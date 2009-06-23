@@ -1,0 +1,26 @@
+547	http://wso2.org/files/BillsSimpleStockQuoteService.wsdl											无
+513	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Stock/xQuotes.wsdl				无
+1777	http://www.iam.sg/prelive-identity/stockquote.wsdl											无
+95	http://www.pocomatic.com/docs/cpp-examples/web-services/bigbank-ocsa/StockQuoteWebService.wsdl	无
+4931	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/FastStockQuoteService/wsdl/FastStockQuoteService.wsdl		无
+272	http://svn.apache.org/repos/asf/tuscany/sandbox/mobile-android/interface-java-jaxws/src/test/resources/wsdl/StockExceptionTest.wsdl			无
+941	http://www.magicdraw.com/images/uml/code_engineering/reverse/wsdl/stock.wsdl?NMSESSID=b61efa602682a7937da62541ae1f2010				
+931	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Stock/StockServices.wsdl			无
+939	http://svn.apache.org/repos/asf/webservices/wsif/branches/WSIF_2_0-uses-wsdl4j-1_4-patches/java/test/stockquote/wsifservice/Stockquote.wsdl	无
+1407	http://svn.apache.org/repos/asf/synapse/trunk/java/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl	无
+2769	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceBirthDateCertificate/IBirthCertificateWSv1.wsdl				99.73% since 五月 2007
+2770	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceBirthDateCertificateAudit/IBirthCertificateAuditWSv1.wsdl		99.73% since 五月 2007
+793	https://svn.apache.org/repos/asf/webservices/axis2/trunk/java/modules/samples/quickstartaxiom/resources/META-INF/StockQuoteService.wsdl		无
+8833	http://svn.apache.org/repos/asf/tuscany/branches/sca-java-0.91/itest/exceptions-cross-binding/src/main/resources/wsdl.sdo/StockExceptionTest.wsdl	无
+4327	http://www.flash-db.com/services/ws/stockHistory.wsdl							83.41% since 四月 2007	
+8108	http://www.mindreef.net/svc/axis2/StockQuoteService.wsdl						无
+7470	http://webservices.xml.com/2003/08/05/examples/stockquote2.wsdl					无
+7462	http://viper.infotech.monash.edu.au/~davids/FIT3077/StockQuote.wsdl				无
+9647	http://webservices.xml.com/2003/08/05/examples/stockquote3.wsdl					无
+9607	http://hostinus.info/soap/stockquote.wsdl										无
+7371	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceAnimalSearch/IAnimalSearchWSv2.wsdl		99.73% since 五月 2007
+9541	http://svn.apache.org/repos/asf/synapse/tags/0.91/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl			无
+8327	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/ReliableStockQuoteService/wsdl/ReliableStockQuoteService.wsdl		无
+3864	http://www.cdatazone.org/files/soapsrv/stockquote.wsdl							无
+4981	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceEventUpload/IEventUploadWSv1.wsdl		99.73% since 五月 2007
+6641	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl	无
