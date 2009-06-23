@@ -1,0 +1,34 @@
+540	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D8-US%20Weather.wsdl											无
+324	http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl																无	
+1644	http://dyn1.ad-mastering.net/_dev/mel/webservice/BerreWeather.wsdl															99.45% since 七月 2007
+1587	http://www.michael-hielscher.de/np/Sources/CSharp/WS_Weather/Web%20References/net.webservicex.www/globalweather.wsdl	无
+1596	http://wwwcs.uni-paderborn.de/cs/ag-engels/ag_dt/Courses/Lehrveranstaltungen/WS0607/WE/Assignments/GlobalWeather.wsdl	无
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.wsdl																	无
+886	http://sistemas.unitecnologica.edu.co/ebooks/Dise%C3%B1o%20Web/ASP.NET/Examples/VBSamples/VB%20Samples/WCF%20Samples/WindowsForms/WeatherClient/Service%20References/ServiceReference/Service1.wsdl	无
+4183	http://svn.codehaus.org/xfire/tags/XFIRE_1_0_M3/xfire/xfire-xmlbeans/src/test-schemas/WeatherForecast.wsdl				无
+7160	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D11-Weather%20Services%20from%20EJSE,%20Inc..wsdl		无
+2386	http://svn.forge.objectweb.org/cgi-bin/viewcvs.cgi/orchestra/trunk/Orchestra/samples/weather/nws/ndfdXML.wsdl?rev=5		无
+7159	http://black.elet.polimi.it/urbe/wsdl/benchmark-training/GroupD-Weather/Service.wsdl									无
+1188	http://people.su.se/~leifj/Weather.wsdl																					无
+8274	http://svn.codehaus.org/xfire/trunk/xfire/xfire-generator/src/wsdl/WeatherForecast.wsdl									无
+5283	http://corona.cis.temple.edu/CIS618/Web%20References/WeatherServiceBHPxy/ShowWeatherSvc.wsdl							无
+5284	http://corona.cis.temple.edu/bdhanoa/Web%20References/edu.temple.cis.blackhole/WeatherService.wsdl						无
+4036	http://www.cs.toronto.edu/~wl/csc309/guide/weather/ndfdXML.wsdl															无
+9349	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D2-FastWeather1.wsdl										无
+6413	http://black.elet.polimi.it/urbe/wsdl/benchmark-training/GroupD-Weather/FastWeather.wsdl								无
+6359	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Weather/WeatherFetcher.wsdl								无
+7888	http://svn.opengroupware.org/OpenGroupware.org/releases/1.0alpha8-shapeshifter/Recycler/SandStorm/NGSoap/data/weatherDocumentStyle.wsdl	无
+7887	http://astrogrid.ast.cam.ac.uk/wsdl/ogsa-tp-3/samples/weather/weather_bindings.wsdl										无
+7896	http://services.bulport.com/weather/weather.wsdl																		无
+7892	http://www.modulesuite.com/webservice/weather/ModuleSuite_KisyochoWeather.wsdl											无
+3870	https://svn.apache.org/repos/asf/webservices/muse/branches/1.0/src/examples/ieeedemo/src/wsdl/weather-station.wsdl		无
+7893	http://www.novell.com/documentation/workbench4/docs/jbroker-web/examples/xmethods/weather/weatherretriever.wsdl			无
+7891	http://www.kirkwoodg.com/Library/OReilly%5COReilly%20Web%20Services%20Essentials%5CSample%20Code%5CWSDL%5CWeatherService.wsdl	无
+7877	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Weather/GlobalWeather.wsdl								无
+7878	http://wsrp.bea.com/portal/boulder/weather.wsdl																			98.08% since 一月 2008
+7883	http://www.deere.com/weatherconditions/wsdl/com/deere/u90259/weather/view/services/WeatherForecastService.wsdl			100.00% since 十二月 2006
+7884	http://dev.eclipse.org/svnroot/stp/org.eclipse.stp.sca-tools/org.eclipse.stp.sca/trunk/samples/org.eclipse.stp.sca.samples.src.weather-simple-ws/src/SimpleWeather.wsdl	无
+7885	http://corona.cis.temple.edu/nsavraja/c618118F05Nov11/Web%20References/WeatherServiceBHPxy/ShowWeatherSvc.wsdl			无
+7882	http://viewcvs.globus.org/viewcvs.cgi/*checkout*/gridservices/schema/samples/weather_service.wsdl						无
+8073	http://asusrl.eas.asu.edu/share/xyz/Research/Projects/sg247257/sampcode/notification/brokerWSDL/weatherWSNBus.weatherWSNServiceNotificationBrokerNonBound.wsdl	无
+3872	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D19-World%20Weather%20By%20Station%20ID.wsdl				无
