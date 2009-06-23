@@ -1,0 +1,16 @@
+4239	http://www.flash-db.com/services/ws/locationByZip.wsdl			83.08% since 四月 2007
+8671	http://ov.yahoo.co.jp/developer/docs/V4/wsdl/V4/LocationService.wsdl	无
+1189	http://people.su.se/~leifj/GetLocations.wsdl							无
+4385	http://px.pats.no/px/9_terminal_location/parlayx_terminal_location_notification_manager_interface_3_0.wsdl	无
+2560	https://svn.apache.org/repos/asf/webservices/woden/trunk/java/test/testcase/resolver/schemaloc/resources/SchemaLocationTest.wsdl	无
+5478	http://dev.w3.org/2002/ws/desc/test-suite/documents/bad/Location-5B/Echo.wsdl								无
+6024	http://dev.w3.org/2002/ws/desc/test-suite/documents/good/LocationTemplate-1G/SOAPservice.wsdl				无
+2227	http://www.arcwebservices.com/services/v2006/WirelessLocation.wsdl											37.79% since 七月 2006
+3373	http://dev.w3.org/2002/ws/desc/test-suite/documents/good/LocationTemplate-3G/SOAPservice.wsdl				无
+8133	http://people.su.se/~ft/wsdl/GetLocations.wsdl							无
+7269	http://dev.w3.org/2002/ws/desc/test-suite/documents/bad/Location-7B/Echo.wsdl	无
+8009	http://orygenesdb.cirad.fr/getGeneIdByLocation.wsdl								无
+9111	https://beta.fpdsng.com/FPDS/BusinessServices/DataCollection/locations/1.0/Place.wsdl	无
+9085	http://developer.searchmarketing.yahoo.com/docs/V4/wsdl/V4/LocationService.wsdl			无
+1954	http://dev.w3.org/2002/ws/desc/test-suite/documents/good/LocationTemplate-2G/SOAPservice.wsdl	无
+6529	http://dev.w3.org/2002/ws/desc/test-suite/documents/bad/Location-2B/Echo.wsdl	无
