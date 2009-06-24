@@ -15,6 +15,8 @@ public class GrepWords {
 		reader.close();
 		return buffer.toString().toLowerCase();
 	}
+	
+	public static String query = "location";
 
 	/**
 	 * @param args
@@ -25,7 +27,7 @@ public class GrepWords {
 		int count = 0;
 		for (File file : files) {
 			String content = readFile(file);
-			if (content.indexOf("weather") > 0) {
+			if (content.indexOf(query) > 0) {
 				count ++;
 				System.out.println(file.getName());
 			}
@@ -36,10 +38,10 @@ public class GrepWords {
 		int count2 = 0;
 		for (Map.Entry<String, String> item : wsdls.entrySet()) {
 			String url = item.getValue().toLowerCase();
-			if (url.indexOf("weather") > 0 
+			if (url.indexOf(query) > 0 
 					&& new File("data2/AllFile/" + item.getKey() + ".wsdl").exists()) {
 				String content = readFile(new File("data2/AllFile/" + item.getKey() + ".wsdl"));
-				if (content.indexOf("weather") > 0) {
+				if (content.indexOf(query) > 0) {
 					System.out.println(item.getKey() + "\t" + item.getValue());
 					count2 ++;
 				}
