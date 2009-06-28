@@ -1,0 +1,6 @@
+0	4239	http://www.flash-db.com/services/ws/locationByZip.php	500
+0	4327	http://www.flash-db.com/services/ws/stockHistory.php	500
+1	4239	http://www.flash-db.com/services/ws/locationByZip.php	500
+1	4327	http://www.flash-db.com/services/ws/stockHistory.php	500
+2	4239	http://www.flash-db.com/services/ws/locationByZip.php	500
+2	4327	http://www.flash-db.com/services/ws/stockHistory.php	500

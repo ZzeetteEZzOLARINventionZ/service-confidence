@@ -1,0 +1,64 @@
+540	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D8-US%20Weather.wsdl	ok
+324	http://www.weather.gov/forecasts/xml/DWMLgen/wsdl/ndfdXML.wsdl	ok
+1644	http://dyn1.ad-mastering.net/_dev/mel/webservice/BerreWeather.wsdl	ok
+1587	http://www.michael-hielscher.de/np/Sources/CSharp/WS_Weather/Web%20References/net.webservicex.www/globalweather.wsdl	ok
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.wsdl	ok
+886	http://sistemas.unitecnologica.edu.co/ebooks/Dise%C3%B1o%20Web/ASP.NET/Examples/VBSamples/VB%20Samples/WCF%20Samples/WindowsForms/WeatherClient/Service%20References/ServiceReference/Service1.wsdl	not
+4183	http://svn.codehaus.org/xfire/tags/XFIRE_1_0_M3/xfire/xfire-xmlbeans/src/test-schemas/WeatherForecast.wsdl	not
+7160	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D11-Weather%20Services%20from%20EJSE,%20Inc..wsdl	not
+1188	http://people.su.se/~leifj/Weather.wsdl	not
+5283	http://corona.cis.temple.edu/CIS618/Web%20References/WeatherServiceBHPxy/ShowWeatherSvc.wsdl	ok
+5284	http://corona.cis.temple.edu/bdhanoa/Web%20References/edu.temple.cis.blackhole/WeatherService.wsdl	ok
+9349	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D2-FastWeather1.wsdl	ok
+6359	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Weather/WeatherFetcher.wsdl	not
+7888	http://svn.opengroupware.org/OpenGroupware.org/releases/1.0alpha8-shapeshifter/Recycler/SandStorm/NGSoap/data/weatherDocumentStyle.wsdl	not
+7896	http://services.bulport.com/weather/weather.wsdl	not
+7892	http://www.modulesuite.com/webservice/weather/ModuleSuite_KisyochoWeather.wsdl	not
+3870	https://svn.apache.org/repos/asf/webservices/muse/branches/1.0/src/examples/ieeedemo/src/wsdl/weather-station.wsdl	not
+7893	http://www.novell.com/documentation/workbench4/docs/jbroker-web/examples/xmethods/weather/weatherretriever.wsdl	ok
+7891	http://www.kirkwoodg.com/Library/OReilly%5COReilly%20Web%20Services%20Essentials%5CSample%20Code%5CWSDL%5CWeatherService.wsdl	ok
+7877	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Weather/GlobalWeather.wsdl	not
+7878	http://wsrp.bea.com/portal/boulder/weather.wsdl	ok
+7883	http://www.deere.com/weatherconditions/wsdl/com/deere/u90259/weather/view/services/WeatherForecastService.wsdl	ok
+7884	http://dev.eclipse.org/svnroot/stp/org.eclipse.stp.sca-tools/org.eclipse.stp.sca/trunk/samples/org.eclipse.stp.sca.samples.src.weather-simple-ws/src/SimpleWeather.wsdl	not
+7885	http://corona.cis.temple.edu/nsavraja/c618118F05Nov11/Web%20References/WeatherServiceBHPxy/ShowWeatherSvc.wsdl	ok
+7882	http://viewcvs.globus.org/viewcvs.cgi/*checkout*/gridservices/schema/samples/weather_service.wsdl	not
+3872	http://black.elet.polimi.it/urbe/wsdl/benchmark/GroupD-Weather/D19-World%20Weather%20By%20Station%20ID.wsdl	ok
+
+
+
+
+
+547	http://wso2.org/files/BillsSimpleStockQuoteService.wsdl
+547	http://wso2.org/files/BillsSimpleStockQuoteService.wsdl
+513	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Stock/xQuotes.wsdl
+1777	http://www.iam.sg/prelive-identity/stockquote.wsdl
+95	http://www.pocomatic.com/docs/cpp-examples/web-services/bigbank-ocsa/StockQuoteWebService.wsdl
+4931	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/FastStockQuoteService/wsdl/FastStockQuoteService.wsdl
+272	http://svn.apache.org/repos/asf/tuscany/sandbox/mobile-android/interface-java-jaxws/src/test/resources/wsdl/StockExceptionTest.wsdl
+941	http://www.magicdraw.com/images/uml/code_engineering/reverse/wsdl/stock.wsdl?NMSESSID=b61efa602682a7937da62541ae1f2010
+931	http://lsdis.cs.uga.edu/projects/meteor-s/downloads/mwsaf/wsdl/Stock/StockServices.wsdl
+939	http://svn.apache.org/repos/asf/webservices/wsif/branches/WSIF_2_0-uses-wsdl4j-1_4-patches/java/test/stockquote/wsifservice/Stockquote.wsdl
+2769	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceBirthDateCertificate/IBirthCertificateWSv1.wsdl
+2770	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceBirthDateCertificateAudit/IBirthCertificateAuditWSv1.wsdl
+793	https://svn.apache.org/repos/asf/webservices/axis2/trunk/java/modules/samples/quickstartaxiom/resources/META-INF/StockQuoteService.wsdl
+8833	http://svn.apache.org/repos/asf/tuscany/branches/sca-java-0.91/itest/exceptions-cross-binding/src/main/resources/wsdl.sdo/StockExceptionTest.wsdl
+4327	http://www.flash-db.com/services/ws/stockHistory.wsdl
+8108	http://www.mindreef.net/svc/axis2/StockQuoteService.wsdl
+7462	http://viper.infotech.monash.edu.au/~davids/FIT3077/StockQuote.wsdl
+9607	http://hostinus.info/soap/stockquote.wsdl
+7371	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceAnimalSearch/IAnimalSearchWSv2.wsdl
+9541	http://svn.apache.org/repos/asf/synapse/tags/0.91/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl
+8327	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/ReliableStockQuoteService/wsdl/ReliableStockQuoteService.wsdl
+8327	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/ReliableStockQuoteService/wsdl/ReliableStockQuoteService.wsdl
+3864	http://www.cdatazone.org/files/soapsrv/stockquote.wsdl
+4981	https://www.clia.livestockid.ca/CLTS/public/help/en/webservices/WebServiceEventUpload/IEventUploadWSv1.wsdl
+6641	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl
+6641	http://svn.apache.org/repos/asf/synapse/branches/1.0/modules/samples/services/SimpleStockQuoteService/wsdl/SimpleStockQuoteService.wsdl
+4239	http://www.flash-db.com/services/ws/locationByZip.wsdl
+8671	http://ov.yahoo.co.jp/developer/docs/V4/wsdl/V4/LocationService.wsdl
+1189	http://people.su.se/~leifj/GetLocations.wsdl
+2227	http://www.arcwebservices.com/services/v2006/WirelessLocation.wsdl
+8009	http://orygenesdb.cirad.fr/getGeneIdByLocation.wsdl
+9111	https://beta.fpdsng.com/FPDS/BusinessServices/DataCollection/locations/1.0/Place.wsdl
+9085	http://developer.searchmarketing.yahoo.com/docs/V4/wsdl/V4/LocationService.wsdl

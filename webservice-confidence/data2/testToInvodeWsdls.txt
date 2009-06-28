@@ -1,0 +1,2 @@
+4239	http://www.flash-db.com/services/ws/locationByZip.wsdl			83.08% since 四月 2007
+4327	http://www.flash-db.com/services/ws/stockHistory.wsdl							83.41% since 四月 2007

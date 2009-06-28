@@ -1,0 +1,118 @@
+540	http://www.webservicex.com/usweather.asmx	503:3	error:4	500:93	
+540	http://www.webservicex.com/usweather.asmx	503:3	error:5	500:92	
+540	http://www.webservicex.com/usweather.asmx	503:3	error:4	500:93	
+324	http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php	error:3	500:97	
+1644	http://dyn1.ad-mastering.net/_dev/mel/webservice/serveur.php	500:100	
+1587	http://www.webservicex.net/globalweather.asmx	503:3	error:3	500:94	
+1587	http://www.webservicex.net/globalweather.asmx	503:3	error:5	500:92	
+1587	http://www.webservicex.net/globalweather.asmx	503:3	error:3	500:94	
+1596	http://www.webservicex.net/globalweather.asmx	503:3	error:2	500:95	
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.asmx	500:100	
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.asmx	500:100	
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.asmx	500:100	
+261	http://www.webxml.com.cn/WebServices/WeatherWebService.asmx	500:100	
+886	http://localhost:63044/WCFWeatherService/Service1.svc	error:100	
+4183	http://www.webservicex.net/WeatherForecast.asmx	503:4	error:4	500:92	
+4183	http://www.webservicex.net/WeatherForecast.asmx	503:4	500:96	
+4183	http://www.webservicex.net/WeatherForecast.asmx	503:3	error:3	500:94	
+7160	http://www.ejse.com/WeatherService/Service.asmx	100:100	
+7160	http://www.ejse.com/WeatherService/Service.asmx	error:1	100:99	
+7160	http://www.ejse.com/WeatherService/Service.asmx	error:2	100:98	
+2386	http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php	error:2	500:98	
+7159	http://www.ejse.com/WeatherService/Service.asmx	error:1	100:99	
+7159	http://www.ejse.com/WeatherService/Service.asmx	error:1	100:99	
+7159	http://www.ejse.com/WeatherService/Service.asmx	error:1	100:99	
+1188	http://s1.devel.sip.su.se/WeatherForecast.yaws	error:100	
+1188	http://s1.devel.sip.su.se/WeatherForecast.yaws	error:100	
+1188	http://s1.devel.sip.su.se/WeatherForecast.yaws	error:100	
+8274	http://www.webservicex.net/WeatherForecast.asmx	503:4	error:4	500:92	
+5283	http://blackhole.cis.temple.edu/WebServicesBH/WeatherService/ShowWeatherSvc.asmx	error:2	100:98	
+5284	http://blackhole.cis.temple.edu/ws618118/WeatherService.asmx	error:2	100:98	
+4036	http://www.weather.gov/forecasts/xml/SOAP_server/ndfdXMLserver.php	500:100	
+9349	http://ws2.serviceobjects.net/fw/FastWeather.asmx	error:2	100:98	
+9349	http://ws2.serviceobjects.net/fw/FastWeather.asmx	error:1	100:99	
+9349	http://ws2.serviceobjects.net/fw/FastWeather.asmx	100:100	
+6413	http://ws2.serviceobjects.net/fw/FastWeather.asmx	100:100	
+6413	http://ws2.serviceobjects.net/fw/FastWeather.asmx	error:2	100:98	
+6413	http://ws2.serviceobjects.net/fw/FastWeather.asmx	error:3	100:97	
+6359	http://glkev.webs.innerhost.com/glkev_ws/WeatherFetcher.asmx	unknowHost:100	
+6359	http://glkev.webs.innerhost.com/glkev_ws/WeatherFetcher.asmx	unknowHost:100	
+6359	http://glkev.webs.innerhost.com/glkev_ws/WeatherFetcher.asmx	unknowHost:100	
+7888	http://hosting001.vs.k2unisys.net/Weather/PDCWebService/WeatherServices.asmx	unknowHost:100	
+7888	http://hosting001.vs.k2unisys.net/Weather/PDCWebService/WeatherServices.asmx	unknowHost:100	
+7888	http://hosting001.vs.k2unisys.net/Weather/PDCWebService/WeatherServices.asmx	unknowHost:100	
+7896	http://services.bulport.com/weather/	200:100	
+7892	http://www.modulesuite.com/webservice/weather/server.php	error:2	500:98	
+3870	http://localhost:8080/muse/services/weather-station	401:100	
+7893	http://www.vbws.com/services/weatherretriever.asmx	error:1	301:99	
+7893	http://www.vbws.com/services/weatherretriever.asmx	error:1	301:99	
+7893	http://www.vbws.com/services/weatherretriever.asmx	error:2	301:98	
+7891	http://localhost:8080/soap/servlet/rpcrouter	401:100	
+7877	http://live.capescience.com:80/ccx/GlobalWeather	error:100	
+7877	http://live.capescience.com:80/ccx/GlobalWeather	error:100	
+7878	http://wsrp.bea.com:80/portal/boulder/weather.jws	error:8	500:92	
+7878	http://wsrp.bea.com:80/portal/boulder/weather.jws	error:5	500:95	
+7878	http://wsrp.bea.com:80/portal/boulder/weather.jws	error:8	500:92	
+7883	http://www.deere.com/weatherconditions/services/WeatherForecastService	500:100	
+7884	http://192.168.1.21:8080/SimpleWeather	error:100	
+7885	http://blackhole.cis.temple.edu/WSc618118/Lab5/Starter/ShowWeatherSvc.asmx	100:100	
+7882	http://localhost:8080/axis/services	401:100	
+7882	http://localhost:8080/axis/services	401:100	
+7882	http://localhost:8080/axis/services	401:100	
+3872	http://www.innergears.com/WebServices/WorldWeatherByICAO/WorldWeatherByICAO.asmx	error:4	404:96	
+3872	http://www.innergears.com/WebServices/WorldWeatherByICAO/WorldWeatherByICAO.asmx	404:100	
+3872	http://www.innergears.com/WebServices/WorldWeatherByICAO/WorldWeatherByICAO.asmx	404:100	
+547	https://localhost:9002/services/SimpleStockQuoteService	error:100	
+547	http://localhost:9000/services/SimpleStockQuoteService	error:100	
+547	https://localhost:9002/services/SimpleStockQuoteService	error:100	
+547	http://localhost:9000/services/SimpleStockQuoteService	error:100	
+513	http://services.xignite.com/xQuotes.asmx	error:3	500:97	
+513	http://services.xignite.com/xQuotes.asmx	error:4	500:96	
+513	http://services.xignite.com/xQuotes.asmx	500:100	
+1777	http://iam.sg/prelive/server1.php	404:100	
+95	http://www.webservicex.net/stockquote.asmx	503:4	error:8	500:88	
+95	http://www.webservicex.net/stockquote.asmx	503:4	error:9	500:87	
+95	http://www.webservicex.net/stockquote.asmx	503:4	error:4	500:92	
+4931	http://localhost:8080/soap/FastStockQuoteService	401:100	
+272	http://localhost:8085/services/exchangeJaxbService	error:100	
+941	http://example.com/stockquote	error:1	404:99	
+931	http://glkev.webs.innerhost.com/glkev_ws/StockServices.asmx	unknowHost:100	
+931	http://glkev.webs.innerhost.com/glkev_ws/StockServices.asmx	unknowHost:100	
+931	http://glkev.webs.innerhost.com/glkev_ws/StockServices.asmx	unknowHost:100	
+939	http://localhost:8080/soap/servlet/rpcrouter	401:100	
+939	http://localhost:8080/axis/services/Stockquote	401:100	
+1407	https://localhost:9002/services/SimpleStockQuoteService	error:100	
+1407	http://localhost:9000/services/SimpleStockQuoteService	error:100	
+1407	https://localhost:9002/services/SimpleStockQuoteService	error:100	
+1407	http://localhost:9000/services/SimpleStockQuoteService	error:100	
+2769	https://www.clia.livestockid.ca/CLTS/BirthCertificateWSv1	error:1	500:99	
+2770	https://www.clia.livestockid.ca/CLTS/BirthCertificateAuditWSv1	error:5	500:95	
+793	http://localhost:8080/axis2/services/StockQuoteService	401:100	
+793	http://localhost:8080/axis2/services/StockQuoteService	401:100	
+8833	http://localhost:8085/StockExceptionTestService/services/StockExceptionTestService	error:100	
+4327	http://www.flash-db.com/services/ws/stockHistory.php	500:100	
+8108	http://mindreef.net/svc/axis2/services/StockQuoteService	error:1	500:99	
+8108	http://mindreef.net/svc/axis2/services/StockQuoteService	error:3	500:97	
+8108	http://mindreef.net/svc/axis2/services/StockQuoteService	error:3	500:97	
+7462	http://viper.infotech.monash.edu.au/~davids/cgi-bin/FIT3077/StockQuote/quotes.cgi	error:2	500:98	
+9607	http://test/soap/server1.php	unknowHost:100	
+7371	https://www.clia.livestockid.ca/CLTS/AnimalSearchWSv2	error:3	500:97	
+9541	http://localhost:8080/axis2/services/SimpleStockQuoteService	401:100	
+8327	https://localhost:9002/soap/ReliableStockQuoteService	error:100	
+8327	http://localhost:9000/soap/ReliableStockQuoteService	error:100	
+8327	https://localhost:9002/soap/ReliableStockQuoteService	error:100	
+8327	http://localhost:9000/soap/ReliableStockQuoteService	error:100	
+3864	http://localhost/quote.php	404:100	
+4981	https://www.clia.livestockid.ca/CLTS/EventUploadWSv1	error:2	500:98	
+6641	https://asankha:9002/soap/SimpleStockQuoteService	unknowHost:100	
+6641	http://asankha:9000/soap/SimpleStockQuoteService	unknowHost:100	
+6641	https://asankha:9002/soap/SimpleStockQuoteService	unknowHost:100	
+6641	http://asankha:9000/soap/SimpleStockQuoteService	unknowHost:100	
+4239	http://www.flash-db.com/services/ws/locationByZip.php	500:100	
+8671	https://marketing.im.yahooapis.jp/services/V1/LocationService	error:100	
+1189	http://s1.devel.sip.su.se/get_locations.yaws	error:100	
+2227	http://www.arcwebservices.com/services/v2006/WirelessLocation	error:2	404:45	500:53	
+8133	http://s1.devel.sip.su.se/get_locations.yaws	error:100	
+8009	http://sat.cirad.fr/sat/Orygenesdb/services/getGeneIdByLocation	error:1	404:99	
+9111	https://www.fpds.gov/FPDS/BusinessServices/DataCollection/locations/1.0/Place	error:96	unknowHost:4	
+9085	https://global.marketing.ews.yahooapis.com/services/V4/LocationService	error:100	
