@@ -7,18 +7,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-import org.jdom.JDOMException;
-import pku.sei.webservice.*;
 
 public class FileAnalysisWSDL implements AnalysisWSDL {
 

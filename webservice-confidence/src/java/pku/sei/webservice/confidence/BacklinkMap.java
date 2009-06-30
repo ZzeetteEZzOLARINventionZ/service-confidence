@@ -1,6 +1,9 @@
 package pku.sei.webservice.confidence;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BacklinkMap {
 	public Map<String, ArrayList<String>> urlBacklink;

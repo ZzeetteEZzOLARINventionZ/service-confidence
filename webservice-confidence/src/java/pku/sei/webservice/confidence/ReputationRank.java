@@ -2,7 +2,6 @@ package pku.sei.webservice.confidence;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 
 public class ReputationRank{

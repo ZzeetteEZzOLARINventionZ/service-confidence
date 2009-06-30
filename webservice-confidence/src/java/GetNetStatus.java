@@ -1,8 +1,12 @@
-package pku.sei.webservice;
+
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -63,7 +67,7 @@ public class GetNetStatus {
 		} catch(UnknownHostException e){
 			return "UnknownHostException";
 		}catch (IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			//System.out.println("**************************");
 
 		}
@@ -136,7 +140,7 @@ public class GetNetStatus {
 		} catch(UnknownHostException e){
 			return "UnknownHostException";
 		}catch (IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			//System.out.println("**************************");
 
 		}
@@ -153,53 +157,57 @@ public class GetNetStatus {
 	}
 	
 	public String getCode(String msg){
-		System.out.println(msg);
-		Pattern p = Pattern.compile("http/1.[1|0]\\s(\\d*)\\s.*");
-		Matcher m = p.matcher(msg.toLowerCase());
-		if(m.find()){
-			return m.group(1);
-		}else{
-			return null;
-		}
+		return msg;
+//		System.out.println(msg);
+//		Pattern p = Pattern.compile("http/1.[1|0]\\s(\\d*)\\s.*");
+//		Matcher m = p.matcher(msg.toLowerCase());
+//		if(m.find()){
+//			return m.group(1);
+//		}else{
+//			return null;
+//		}
 	}
 	
 	public static String getStatus(String line, int type){
 		if(type==1){
 			String msg = GetNetStatus.GetConnect(line);
+			return msg;
 			//System.out.println(msg);
-			String msg_code = new GetNetStatus().getCode(msg);
-			if(msg_code == null)
-				return null;
-			if(msg_code.equals("301")||msg_code.equals("302")){
-				Pattern p = Pattern.compile("<a href=\"(.*)\">");
-				Matcher m = p.matcher(msg.toLowerCase());
-				String new_url = null;
-				if(m.find()){
-					new_url = m.group(1);				
-				}
-				if(new_url==null){
-					//String msg = "Location: https://adwords.google.com/api/adwords/v11/CriterionService\r\nx";
-					Pattern np = Pattern.compile("location:[\\s](.*)\\s");
-					Matcher nm = np.matcher(msg.toLowerCase());
-					if(nm.find()){
-						new_url = nm.group(1);	
-					}
-				}
-				if(new_url!=null){
-					//System.out.println("----URL:"+line+"\r\n----New URL:"+new_url);
-					String result = GetNetStatus.GetConnect(new_url);
-					if(result!=null&&result.length()>0){
-						msg_code = new GetNetStatus().getCode(result);						
-						return (msg_code==null?"error":msg_code);
-					}else{
-						return msg_code;
-					}
-				}else{
-					return msg_code;
-				}
-			}else{
-				return msg_code;
-			}
+//			String msg_code = new GetNetStatus().getCode(msg);
+//			
+//			if(msg_code == null)
+//				return null;
+//			if(msg_code.equals("301")||msg_code.equals("302")){
+//				Pattern p = Pattern.compile("<a href=\"(.*)\">");
+//				Matcher m = p.matcher(msg.toLowerCase());
+//				String new_url = null;
+//				if(m.find()){
+//					new_url = m.group(1);				
+//				}
+//				if(new_url==null){
+//					//String msg = "Location: https://adwords.google.com/api/adwords/v11/CriterionService\r\nx";
+//					Pattern np = Pattern.compile("location:[\\s](.*)\\s");
+//					Matcher nm = np.matcher(msg.toLowerCase());
+//					if(nm.find()){
+//						new_url = nm.group(1);	
+//					}
+//				}
+//				if(new_url!=null){
+//					//System.out.println("----URL:"+line+"\r\n----New URL:"+new_url);
+//					String result = GetNetStatus.GetConnect(new_url);
+//					if(result!=null&&result.length()>0){
+//						msg_code = new GetNetStatus().getCode(result);						
+//						//return (msg_code==null?"error":msg_code);
+//						return msg_code;
+//					}else{
+//						return msg_code;
+//					}
+//				}else{
+//					return msg_code;
+//				}
+//			}else{
+//				return msg_code;
+//			}
 		}else{
 			String msg = GetNetStatus.GetConnectGet(line);
 			String msg_code = new GetNetStatus().getCode(msg);
@@ -225,7 +233,8 @@ public class GetNetStatus {
 					String result = GetNetStatus.GetConnectGet(new_url);
 					if(result!=null&&result.length()>0){
 						msg_code = new GetNetStatus().getCode(result);						
-						return (msg_code==null?"error":msg_code);
+						//return (msg_code==null?"error":msg_code);
+						return msg_code;
 					}else{
 						return msg_code;
 					}
@@ -240,35 +249,38 @@ public class GetNetStatus {
 	
 	public static void main(String[] args) throws SecurityException,
 			IOException {
-		//BufferedReader br = new BufferedReader(new FileReader("C:/data/urlList.txt"));
-		//PrintWriter pw = new PrintWriter(new FileWriter("C:/data/netStatus.txt"));
-		String line = "http://www.java-training.com/services/weatherretriever.asmx";
-		//String line = null;
+		BufferedReader br = new BufferedReader(new FileReader("C:/data/urlList.txt"));
+		PrintWriter pw = new PrintWriter(new FileWriter("C:/data/newNetStatus.txt"));
+//		String line = "https://api.echo.nasa.gov:443/echo-v10/ProviderServicePortImpl";
+		String line = null;
 		String code = null;
 		int count = 0;
-//		while((line=br.readLine())!=null){
+		while((line=br.readLine())!=null){
+			code = getStatus(line, 1);
 //			if(line.trim().length()==0)
 //				continue;
-			String code1 = getStatus(line, 1);
-			if(code1==null){
-				String code2 = getStatus(line, 2);
-				code = code2;
-			}else{
-				if(code1.trim().equals("400")||code1.trim().equals("405")){
-					String code2 = getStatus(line, 2);
-					code = code2;
-				}else{
-					code = code1;
-				}
-			}
+//			String code1 = getStatus(line, 1);
+//			if(code1==null){
+//				String code2 = getStatus(line, 2);
+//				code = code2;
+//			}else{
+//				if(code1.trim().equals("400")||code1.trim().equals("405")){
+//					String code2 = getStatus(line, 2);
+//					code = code2;
+//				}else{
+//					code = code1;
+//				}
+//			}
 			
 			//pw.println(line+"\t"+(code==null?"error":code));
-			System.out.println(line+"\t"+(code==null?"error":code));
-//			if(count++%10==0)
-//				pw.flush();
-//		}
-//		pw.flush();
-//		pw.close();
+			//System.out.println(line+"\t"+(code==null?"error":code));
+			pw.println(line+"\r\n=============\r\n"+code);
+			System.out.println(line);
+			if(count++%10==0)
+				pw.flush();
+		}
+		pw.flush();
+		pw.close();
 		
 	}
 }

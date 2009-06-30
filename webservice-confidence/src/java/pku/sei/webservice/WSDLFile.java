@@ -1,7 +1,5 @@
 package pku.sei.webservice;
 
-import pku.sei.webservice.*;
-
 import java.util.ArrayList;
 
 public class WSDLFile {

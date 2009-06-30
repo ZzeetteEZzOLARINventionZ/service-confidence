@@ -1,6 +1,8 @@
 package pku.sei.webservice.confidence;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ServiceIdMap {
 	protected Map<String, String> idUrl = new HashMap<String, String> ();	//<id, url>

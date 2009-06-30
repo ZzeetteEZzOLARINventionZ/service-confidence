@@ -1,10 +1,12 @@
 package pku.sei.webservice.confidence;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Map;
 
 public class AnotherRank {
 	public double[] d;
+	public double[] old_d;
 	int[][] matrix;
 	WebServiceGraph graph;
 	
@@ -17,13 +19,15 @@ public class AnotherRank {
 		 
 		System.out.println("after graph constructor");
 		
-		int[][] matrix = graph.makeMatrix();
+		int[][] temp_matrix = graph.makeMatrix();
 		
 		System.out.println("after make matrix");
 		this.d = graph.calculateD();
+		old_d = d.clone();
 		
 		System.out.println("after calculate init d vector");
-		this.matrix = WebServiceGraph.reverseMatrix(matrix);
+		this.matrix = WebServiceGraph.reverseMatrix(temp_matrix);
+		//this.matrix = temp_matrix;
 		
 		System.out.println("after reverse vector");
 		
@@ -108,11 +112,14 @@ public class AnotherRank {
 		double d[] = ar.d;
 		System.out.println("----------------R A N K -------------------------");
 		PrintWriter writer = new PrintWriter(new FileWriter("data2/anotherRankResult.txt"));
+		PrintWriter writer2 = new PrintWriter(new FileWriter("data2/withoutPropagation.txt"));
 		for (Map.Entry<String, Integer> item : ar.graph.urlId.entrySet()) {
 			writer.println(item.getKey() + "\t" + d[item.getValue()]);
+			writer2.println(item.getKey() + "\t" + ar.old_d[item.getValue()]);
 			System.out.println(item.getKey() + "\t" + d[item.getValue()]);
 		}
 		writer.close();
+		writer2.close();
 		System.out.println("ok");
 	}
 }

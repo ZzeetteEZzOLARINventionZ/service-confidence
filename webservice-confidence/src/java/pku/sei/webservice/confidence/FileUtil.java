@@ -1,7 +1,11 @@
 package pku.sei.webservice.confidence;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class FileUtil {
 	public static List<List<String>> readFile(String file) throws IOException {

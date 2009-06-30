@@ -1,7 +1,13 @@
 package pku.sei.webservice.confidence;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import pku.sei.webservice.DataAnalysis;
 
@@ -83,8 +89,9 @@ public class WsdlFile {
 		else 
 			end = end1 < end2? end1 : end2;
 		String site = null;
-		if (end < 0)
+		if (end < 0){
 			site = url.substring(pos);
+		}
 		else
 			site = url.substring(pos, end);
 		

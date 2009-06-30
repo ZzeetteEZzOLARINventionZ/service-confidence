@@ -3,10 +3,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import jeasy.analysis.MMAnalyzer;
 
-import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.standard.*;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;

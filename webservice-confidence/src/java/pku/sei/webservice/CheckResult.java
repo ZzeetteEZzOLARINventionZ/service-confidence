@@ -1,18 +1,11 @@
 package pku.sei.webservice;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-import pku.sei.webservice.confidence.WsdlFile;
 
 public class CheckResult {
 

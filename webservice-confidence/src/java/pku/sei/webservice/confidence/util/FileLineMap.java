@@ -1,7 +1,13 @@
 package pku.sei.webservice.confidence.util;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 public class FileLineMap {
 	public static Map<String, String> loadFileMap(String file) throws Exception {
@@ -180,10 +186,10 @@ public class FileLineMap {
 			else if (countSite.size() > 0){
 				differentSiteCount ++;
 				// XXX 去掉注释可以看不一样的wsdl的site和endpoint的site
-//				System.out.println("wsdl:\t" + wsdl);
-//				for (String s : item.getValue()) {
-//					System.out.println("epoint:\t" + s);
-//				}
+				System.out.println("wsdl:\t" + wsdl);
+				for (String s : item.getValue()) {
+					System.out.println("epoint:\t" + s); 
+				}
 			}
 			
 			if (countSite.contains(site) && countSite.size() == 1)

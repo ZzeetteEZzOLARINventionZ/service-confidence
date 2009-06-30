@@ -1,8 +1,9 @@
 package pku.sei.webservice.confidence;
 
-import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class StatisticMap {

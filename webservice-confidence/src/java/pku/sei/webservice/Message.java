@@ -1,8 +1,8 @@
 package pku.sei.webservice;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Message implements java.io.Serializable {
 	public String name;
