@@ -1,0 +1,2805 @@
+Click here to Skip to main content 
+
+
+
+
+11,557,369 members (62,478 online)
+
+
+
+  Sign in 
+
+
+
+
+
+
+
+
+
+
+
+
+.
+
+--------------------------------------------------------------------------------
+ 
+
+
+Home
+ 
+
+
+Click here to Skip to main content 
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+home
+articlesChapters and Sections>
+loading 
+
+
+Search
+Latest Articles
+Latest Tips/Tricks
+Top Articles
+Beginner Articles
+Technical Blogs
+Posting/Update Guidelines
+Article Help Forum
+Article Competition
+ Submit an article or tip 
+ Post your Blog 
+
+
+quick answers  Ask a Question
+View Unanswered Questions
+View All Questions...
+Linux questions
+C# questions
+ASP.NET questions
+C#5 questions
+SQL questions
+
+
+discussions All Message Boards...
+Application Lifecycle>Running a Business
+Sales / Marketing
+Collaboration / Beta Testing
+Work & Training Issues
+
+Design and Architecture
+ASP.NET
+JavaScript
+C / C++ / MFC>ATL / WTL / STL
+Managed C++/CLI
+
+Adobe Technologies
+C#
+Free Tools
+Objective-C
+Ruby On Rails
+Database
+Hardware & Devices>System Admin
+
+Hosting and Servers
+Java
+.NET Framework
+Android
+iOS
+Mobile
+Sharepoint
+Silverlight / WPF
+Visual Basic
+Web Development
+Site Bugs / Suggestions
+
+
+featuresCompetitions
+News
+The Insider Newsletter
+The Daily Build Newsletter
+Newsletter archive
+Surveys
+Product Showcase
+Research Library
+CodeProject Stuff
+
+
+community Who's Who
+Most Valuable Professionals
+The Lounge  
+The Insider News
+The Weird & The Wonderful
+The Soapbox
+Press Releases
+Non-English Language >General Indian Topics
+General Chinese Topics
+
+
+
+helpWhat is 'CodeProject'?
+General FAQ
+Ask a Question
+Bugs and Suggestions
+Article Help Forum
+Site Map
+Advertise with us
+Employment Opportunities
+About Us
+
+
+
+
+
+
+
+
+Articles » General Programming » Collections » General
+
+
+
+  
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+
+  
+
+A Simple PList Parser in C#
+
+
+ 
+paladin_t,  19 Jun 2012 CPOL 15K 3
+ 
+  
+
+ 
+
+ 
+     5.00 (1 vote)  
+
+
+
+
+    
+1 vote, 100.0%
+ 
+
+
+
+
+
+
+
+
+
+ loading...  
+Rate this:   
+vote 1vote 2vote 3vote 4vote 5
+   
+ 
+
+
+
+
+
+A simple plist parser within 100 lines of C# code.
+
+
+Introduction
+
+Recently I've been put in charge of making a texture packaging tool at work. We are using pure C# (4.0) for our tools. I need to read and parse plist files in my code. I searched the Internet, but unfortunately it seems it's lacking a plist parser in C#. I understood plist grammar very quick even by reading a few sample files, since it would be easy to analyze for a human as well easy to recognize for a parser. I decided to reinvent this wheel.
+
+Show me the code
+
+The implementation is quite simple, I did it in about an hour. Let's take a quick look at the whole code: 
+
+Hide   Shrink    Copy Code
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+
+namespace Data
+{
+    public class PList : Dictionary<string, dynamic>
+    {
+        public PList()
+        {
+        }
+
+        public PList(string file)
+        {
+            Load(file);
+        }
+
+        public void Load(string file)
+        {
+            Clear();
+
+            XDocument doc = XDocument.Load(file);
+            XElement plist = doc.Element("plist");
+            XElement dict = plist.Element("dict");
+
+            var dictElements = dict.Elements();
+            Parse(this, dictElements);
+        }
+
+        private void Parse(PList dict, IEnumerable<XElement> elements)
+        {
+            for (int i = 0; i < elements.Count(); i += 2)
+            {
+                XElement key = elements.ElementAt(i);
+                XElement val = elements.ElementAt(i + 1);
+
+                dict[key.Value] = ParseValue(val);
+            }
+        }
+
+        private List<dynamic> ParseArray(IEnumerable<XElement> elements)
+        {
+            List<dynamic> list = new List<dynamic>();
+            foreach (XElement e in elements)
+            {
+                dynamic one = ParseValue(e);
+                list.Add(one);
+            }
+
+            return list;
+        }
+
+        private dynamic ParseValue(XElement val)
+        {
+            switch (val.Name.ToString())
+            {
+                case "string":
+                    return val.Value;
+                case "integer":
+                    return int.Parse(val.Value);
+                case "real":
+                    return float.Parse(val.Value);
+                case "true":
+                    return true;
+                case "false":
+                    return false;
+                case "dict":
+                    PList plist = new PList();
+                    Parse(plist, val.Elements());
+                    return plist;
+                case "array":
+                    List<dynamic> list = ParseArray(val.Elements());
+                    return list;
+                default:
+                    throw new ArgumentException("Unsupported");
+            }
+        }
+    }
+}
+
+It's never more clear, isn't it?
+
+The LINQ and dynamic type benefit this lightweight class. It would cost more lines without them. This class is a recursive data structure, although we can't see PList property defined in it; the base class is Dictionary<string, dynamic>, and values in it could be a value of string/int/float/bool/PList/List<dynamic>. The parsing methods are recursive, since the recursive structure. The Parse method enumerates all key-value pairs in a piece of XML data and fill the parsed string-dynamic pairs into the PList structure; each step it will call the ParseValue method to parse a value; the ParseValue method calls data conversion methods or ParseArray or Parse recursively according to the type indicated in the name of a XML node; the ParseArray method enumerates all sub XML nodes and parse them to dynamic type by calling ParseValue recursively. Of course we could use object instead of dynamic out there, but we had to add more type discrimination when we were retrieving a value from a PList, that is something I'd like to avoid. 
+
+Using the code
+
+To parse a plist file, just code it as:
+
+Hide   Copy Code
+PList plist = new PList();
+plist.Load("file_path.plist");
+
+or:
+
+Hide   Copy Code
+PList plist = new PList("file_path.plist");
+
+To retrieve the parsed data it's all the same as using a generic Dictionary, considering the PList is derived from Dictionary<string, dynamic>. The code might looks crude, because I'd like to only show the main idea here without disturbing noise. I think you could and should polish it before using it, for example adding some error/exception handling, or adding a serialization method, etc. Those could be very simple tasks.
+
+Have fun 
+
+Making a plist parser in C# is easier than I expected, and it works fine for me. I hope it would help you too. 
+
+
+
+
+License
+
+
+This article, along with any associated source code and files, is licensed under The Code Project Open License (CPOL)
+
+Share
+
+  email 
+  twitter 
+   
+   
+  
+   
+ 
+About the Author
+
+
+ 
+
+paladin_t 
+ 
+Architect  
+ 
+
+
+[rage kamsters 13]
+
+
+
+
+
+You may also be interested in...
+
+
+
+
+
+XMLite: simple XML parser.
+ 
+
+
+
+Vendor Landscape: Application Delivery Controllers
+ 
+
+
+
+
+A simple XML Parser
+ 
+
+
+
+Integrating HL7 into Medical Applications with LEADTOOLS
+ 
+
+
+
+
+A simple hand-coded script parser
+ 
+
+
+
+3 Best Practices for GUID data in MongoDB 
+ 
+
+Comments and Discussions
+ 
+ 
+You must Sign In to use this message board. 
+
+
+
+Profile popups    SpacingRelaxedCompactTight   NoiseVery HighHighMediumLowVery Low   LayoutNormalOpen TopicsOpen AllThread View   Per page102550     
+ 
+ 
+ 
+  First Prev Next 
+ 
+
+ 
+
+
+ 
+
+ 
+
+
+
+ 
+
+Thanks for the nice code.
+
+ I tested the code; it works fine for the top level "dict" nodes only.
+
+ it does not return values if you have nested "dict" nodes.
+
+ Hopefully you can adjust the code to return the whole .plist file data.
+
+ Regards
+ 
+Sign In·View Thread·Permalink  
+ 
+ 
+ 
+
+Question Why "dynamic" vs "object"?
+ 
+
+ 
+
+
+
+ 
+
+I can't see any reason in this code for using dynamic vs. object.
+ Can you explain the reasoning? 
+ You state that it simplifies the code, but I don't see it.
+ I can substitute object for dynamic with no other change to the code.
+ 
+Sign In·View Thread·Permalink 5.00/5 (1 vote) 
+ 
+ 
+ 
+
+Answer Re: Why "dynamic" vs "object"?
+ 
+
+ 
+
+
+
+ 
+
+
+
+I fully agree with your statement. It is neither visible how the PList is to be used. I.e. parsing is one thing, accessing the parsed data the other. If one has to cast forth and back to get to the data, the "parser" is not so useful. I'd expect some more elaboration on that too.
+ Cheers
+
+ 
+Sign In·View Thread·Permalink  
+ 
+ 
+ 
+
+Suggestion Which plist format?
+ 
+
+
+
+
+ 
+
+Please state which format you parse: see http://en.wikipedia.org/wiki/Property_list[^].
+
+ Cheers
+ Andi
+ 
+Sign In·View Thread·Permalink  
+ 
+ 
+ 
+ 
+ 
+
+
+ 
+
+General General    News News    Suggestion Suggestion    Question Question    Bug Bug    Answer Answer    Joke Joke    Rant Rant    Admin Admin    
+ 
+
+
+
+
+
+  
+ 
+
+
+
+
+
+ 
+
+
+
+
+Permalink | 
+Layout: fixed | fluid 
+Click here to Skip to main content 
+
+
+
+
+11,557,379 members (61,685 online)
+
+
+
+  Sign in 
+
+
+
+
+
+
+
+
+
+
+
+
+.
+
+--------------------------------------------------------------------------------
+ 
+
+
+Home
+ 
+
+
+
+
+
+
+
+home
+articlesChapters and Sections>
+loading 
+
+
+Search
+Latest Articles
+Latest Tips/Tricks
+Top Articles
+Beginner Articles
+Technical Blogs
+Posting/Update Guidelines
+Article Help Forum
+Article Competition
+ Submit an article or tip 
+ Post your Blog 
+
+
+quick answers  Ask a Question
+View Unanswered Questions
+View All Questions...
+Linux questions
+C# questions
+ASP.NET questions
+C#5 questions
+SQL questions
+
+
+discussions All Message Boards...
+Application Lifecycle>Running a Business
+Sales / Marketing
+Collaboration / Beta Testing
+Work & Training Issues
+
+Design and Architecture
+ASP.NET
+JavaScript
+C / C++ / MFC>ATL / WTL / STL
+Managed C++/CLI
+
+Adobe Technologies
+C#
+Free Tools
+Objective-C
+Ruby On Rails
+Database
+Hardware & Devices>System Admin
+
+Hosting and Servers
+Java
+.NET Framework
+Android
+iOS
+Mobile
+Sharepoint
+Silverlight / WPF
+Visual Basic
+Web Development
+Site Bugs / Suggestions
+
+
+featuresCompetitions
+News
+The Insider Newsletter
+The Daily Build Newsletter
+Newsletter archive
+Surveys
+Product Showcase
+Research Library
+CodeProject Stuff
+
+
+community Who's Who
+Most Valuable Professionals
+The Lounge  
+The Insider News
+The Weird & The Wonderful
+The Soapbox
+Press Releases
+Non-English Language >General Indian Topics
+General Chinese Topics
+
+
+
+helpWhat is 'CodeProject'?
+General FAQ
+Ask a Question
+Bugs and Suggestions
+Article Help Forum
+Site Map
+Advertise with us
+Employment Opportunities
+About Us
+
+
+
+
+
+
+
+
+
+  
+
+    
+  
+  
+
+ 
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+    
+
+66,271 Results
+
+
+
+
+Search
+Everything
+Articles
+Technical Blogs
+Tips & Tricks
+Reference Articles
+Research Library
+Questions
+Answers
+Forum Messages
+News Items 
+
+Just My Stuff
+My Bookmarks 
+
+
+Sort by
+Relevance Rating (Hi - Lo) Rating (Lo - Hi) Popularity (Hi - Lo) Popularity (Lo - Hi) Votes (Hi - Lo) Votes (Lo - Hi) Modified (New - Old) Modified (Old - New) Thread Modified (New - Old) Thread Modified (Old - New) Created (New - Old) Created (Old - New) Title (A - Z) Title (Z - A) Author (A - Z) Author (Z - A) Price ($ - $$$) Price ($$$ - $) Duration (Short - Long) Duration (Long - Short)  
+
+
+
+Match
+
+All Fields Title Description Author(s) Tags  
+
+Any Date Last 12 hours Last 24 hours Last week Last 2 weeks Last month Last 3 months Last 6 months Last year January February March April May June July August September October November December  
+
+
+Rating Range
+All - Including Unrated 1.0 - 5.0 2.0 - 5.0 3.0 - 5.0 4.0 - 5.0 4.5 - 5.0 4.8 - 5.0 5.0  
+
+Advanced Filters:
+
+
+Article Topics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Article License
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Forums
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 1 of 1,326
+
+
+Page Size: 10 · 25 · 50
+
+
+--------------------------------------------------------------------------------
+
+
+
+
+ Control Electrical Appliances using PC by Taha Amin  
+
+  
+
+
+
+Article 30 May 2004   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Control electrical appliances using PC.
+
+Languages » C# » How To
+
+VC6 .NET1.1 Win2K WinXP Win2003 VS.NET2003 VS6 C# Dev Intermediate , +  
+
+
+
+ Simple Keyboard Electric Organ by hevesir  
+
+
+
+
+
+Article 15 Oct 2014   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+This is a simple electric organ (piano) to teach how to synthesize sound with directsound.
+
+Multimedia » Directx » General
+
+C# Windows .NET HTML DirectX Intermediate Microsoft DirectSound VS2013   
+
+
+
+ The Grid Control by Chris Maunder, Ken Bertelson, Mario Zucca, Fred Ackers  
+
+
+
+
+
+Article 5 Jun 2000   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+The grid is a fully featured control for displaying tabular data. There are MFC and ATL versions that run on everything from CE to Windows 2000
+
+Platforms, Frameworks & Libraries » Libraries » Code Projects
+
+VC6 Visual-Studio MFC Dev Intermediate C++ Windows   
+
+
+
+ Electric Train...!!! by _Amy  
+
+
+
+
+
+Forum Message 20 Jul 2012   
+
+
+
+
+ 
+
+ 
+   
+
+A few days after Christmas, a mother was working in the kitchen listening to her young son playing with his new electric train in the living room. She heard the train stop and her son said, "All of you sons of bitches who want off, get the hell off n
+
+General Discussions » The Soapbox
+
+  
+
+
+
+ MFC Grid control 2.27 by Chris Maunder  
+
+  
+
+
+
+Article 6 May 2010   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A fully featured MFC grid control for displaying tabular data. The grid is a custom control derived from CWnd
+
+Desktop Development » Miscellaneous » Grid Control
+
+VC6 VC7 VC7.1 VC8.0 MFC C++ Visual-Studio VC9.0 VS2010   
+
+
+
+ A WTL Grid by Noel Frankinet  
+
+  
+
+
+
+Article 22 Jan 2002   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+A WTL grid (really).
+
+Platforms, Frameworks & Libraries » Wtl » General
+
+VC6 Win2K VS6 ATL WTL STL Dev Intermediate C++ Windows , +  
+
+
+
+ Smart Grid by Alex Turc  
+
+  
+
+
+
+Article 24 May 2000   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+Build a grid using ATL, STL and Win32 API.
+
+Platforms, Frameworks & Libraries » Atl » Controls
+
+VC6 VS6 VB6 ATL STL Dev Intermediate C++ VB Windows , +  
+
+
+
+ C# Grid by NormDroid  
+
+  
+
+
+
+Article 11 Dec 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+An implementation of a grid in C#
+
+Desktop Development » Grid & Data Controls » Grid Controls
+
+.NET1.1 VS.NET2003 C# Windows Dev Intermediate .NET Visual-Studio   
+
+
+
+ Re: Electrical Grid online? News about Europe disruptions by Steve Mayfield  
+
+
+
+
+
+Forum Message 18 Jan 2008   
+
+
+
+apparently hackers got into several electrical utilities in Europe [^] Steve
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: It be an electric revolution! by evilnoodle  
+
+
+
+
+
+Forum Message 21 Sep 2008   
+
+
+
+I read somewhere that, if as little as 30% of Americans switch to electric vehicles which they charge at night, the power grid would be unable to cope with the load and the US will have an even greater energy crisis. So we need to look at renewabl
+
+General Discussions » The Lounge
+
+  
+
+
+
+ The electrical engineer by brahmma  
+
+
+
+
+
+Forum Message 23 Nov 2006   
+
+
+
+
+ 
+
+ 
+   
+
+A chemist, a biologist and an electrical engineer were on death row waiting to go in the electric chair. The chemist was brought forward first. "Do you have anything you want to say?" asked the executioner, strapping him in. "No," replied th
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Kendo Grid In Action by Hasibul Haque  
+
+  
+
+
+
+Article 14 Jun 2013   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+How to work with tabular data using Kendo Grid in web application
+
+Third Party Products » Third Party Products And Tools » General
+
+C# ASP.NET Javascript .NET HTML Dev Beginner C# .NET C#4.0 , +  
+
+
+
+ Another WTL Grid by Bjornar Henden  
+
+  
+
+
+
+Article 1 Jun 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+A WTL Grid mostly aimed for use against databases.
+
+Platforms, Frameworks & Libraries » Wtl » General
+
+VC6 VC7 VC7.1 VC8.0 Win2K WinXP VS.NET2003 ATL WTL Dev , +  
+
+
+
+ ATL Grid control by Mario Zucca  
+
+  
+
+
+
+Article 6 Feb 2000   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+A grid control for displaying tabular data, based on Chris Maunder's grid control
+
+Platforms, Frameworks & Libraries » Atl » Controls
+
+VC6 VS6 VB6 MFC ATL Dev Advanced C++ VB Windows , +  
+
+
+
+ Globalized property grid by Gerd Klevesaat  
+
+  
+
+
+
+Article 16 Apr 2002   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+This article provides a property grid with localized display names for properties by using .NET globalization and component model.
+
+Desktop Development » Miscellaneous » General
+
+.NET1.0 VS.NET2002 C# Windows Dev Intermediate .NET Visual-Studio   
+
+
+
+ Real-Time Data Grid by Jason Mason  
+
+  
+
+
+
+Article 29 Sep 2007   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+An Excel-style grid displaying data changes in real-time
+
+Desktop Development » Grid & Data Controls » Grid Controls
+
+.NET2.0 WinXP Vista VS2005 C#2.0 .NET3.0 Dev Intermediate C# Windows , +  
+
+
+
+ Data Grid for JSP by Prasad Khandekar  
+
+  
+
+
+
+Article 21 Jul 2006   license: LGPL3 
+
+
+
+
+ 
+
+ 
+   
+
+An Asp.Net style grid control for JSP with ability to fetch data from java.sql.Connection or java.util.List or java.sql.ResultSet
+
+Desktop Development » Grid & Data Controls » Grid Controls
+
+Win2K WinXP Win2003 IE6.0 IE5.5 Java Java SE Visual-Studio Architect Dev , +  
+
+
+
+ Re: Clean but mean electric car by Christopher Duncan  
+
+
+
+
+
+Forum Message 14 Aug 2006   
+
+
+
+I saw that a while back. Of course, you have to put a refrigerator sized electrical panel in your garage to charge it from their grid, but who cares? This thing is way cool. I might even park it next to the Vette. :-D 
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Clean but mean electric car by Ryan Binns  
+
+
+
+
+
+Forum Message 14 Aug 2006   
+
+
+
+Christopher Duncan wrote:Of course, you have to put a refrigerator sized electrical panel in your garage to charge it from their grid, but who cares? It also somes with an adaptor so that y
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Simple Grid - A Win32 message based grid control by David MacDermot  
+
+  
+
+
+
+Article 22 Jan 2015   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A simple to use grid control for Windows SDK C applications.
+
+Desktop Development » Grid & Data Controls » General
+
+C++ C   
+
+
+
+ Re: Plugin Electric Vehicle of the Present! by Russell Morris  
+
+
+
+
+
+Forum Message 29 May 2006   
+
+
+
+The problems currently faced by plug-ins are, to my understanding, as follows: 1. Effective battery life. With all the nasty chemicals in batteries, they need to have a good, long life. Much good research is ongoing in this area. 2. Infrastructur
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Plugin Electric Vehicle of the Present! by Russell Morris  
+
+
+
+
+
+Forum Message 29 May 2006   
+
+
+
+Rocky Moore wrote:I think you might be missing something here or I am It appears as though I was missing something :) I thought the original post was referring to total-electric car conver
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Wireless Electricity by Pravarakhya  
+
+
+
+
+
+Forum Message 2 Sep 2009   
+
+
+
+
+ 
+
+ 
+   
+
+According to this CNN Article[^], we should be able t
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Wireless electricity by leppie  
+
+
+
+
+
+Forum Message 23 Jul 2009   
+
+
+
+
+ 
+
+ 
+   
+
+i.j.russell wrote:Who on earth thinks up this stuff? Nikola Tesla? xacc.ide
+
+General Discussions » The Lounge
+
+  
+
+
+
+ electrical transformers fundamentals by OriginalGriff  
+
+
+
+
+
+Answer 17 Jun 2012   license: CPOL 
+
+
+
+We do not do your homework: it is set for a reason. It is there so that you think about what you have been told, and try to understand it. It is also there so that your tutor can identify areas where you are weak, and focus more attention on remedial action.Try it yourself, you may find it...
+
+General Programming » Uncategorised Quick Answers » General
+
+TabletPC Windows   
+
+
+
+ The Ultimate Grid Home Page by The Ultimate Toolbox, metalogicsw.com  
+
+  
+
+
+
+Article 14 Sep 2013   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+The Ultimate Grid is now Open Source
+
+Platforms, Frameworks & Libraries » Mfc » Open Source Ultimate Toolbox
+
+VC6 VC7 VC7.1 VC8.0 Visual-Studio MFC Dev Intermediate C++ VC9.0 , +  
+
+
+
+ Electric Appliance Automation - An IoT Project using Windows Azure by Nitin Sawant  
+
+  
+
+
+
+Article 5 Mar 2015   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Control home appliance from anywhere in the world
+
+Contests » Iot On Azure » General
+
+ASP.NET Windows Visual-Studio Architect Dev Azure C#3.5 Cloud C#5   
+
+
+
+ ASP.NET MVC2 Plugin Architecture Part 2: Electric Boogaloo by Mr. Iman Mayes  
+
+  
+
+
+
+Article 20 Jan 2015   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Implementation of a library to enable a plugin architecture in ASP.NET MVC2 applications, Part II.
+
+Web Development » Asp.Net » Howto
+
+.NET3.5 C# ASP.NET Windows .NET HTML Architect Dev Intermediate .NET , +  
+
+
+
+ Using comboboxes in the MFC Grid Control by Chris Maunder  
+
+  
+
+
+
+Article 8 Jan 2013   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Explains how to use comboboxes to edit cells in the MFC Grid Control
+
+Desktop Development » Miscellaneous » Grid Control
+
+VC6 Win2K MFC Dev Intermediate C++ Windows   
+
+
+
+ ultra grid updating by sevenbell  
+
+
+
+
+
+Question 31 Jan 2011   license: CPOL 
+
+
+
+Can anybody help me?I used the following code for inserting to one table and to update the field by setting name as primarykey on-another table . On debuging if i select a name to display the content to ultra grid it show the exception like ... 'Dynamic SQL generation for the UpdateCommand is...
+
+General Programming » Uncategorised Quick Answers » General
+
+SQL-server-2005 C#3.0 C# SQL-Server   
+
+
+
+ SourceGrid - Open Source C# Grid Control by Davide Icardi  
+
+  
+
+
+
+Article 4 Aug 2013   license: MIT 
+
+
+
+
+ 
+
+ 
+   
+
+SourceGrid is a free open source grid control. Supports virtual grid, custom cells and editors, advanced formatting options and many others features
+
+Desktop Development » Grid & Data Controls » Grid Controls
+
+.NET1.0 .NET1.1 Win2K WinXP VS.NET2003 C# Dev Intermediate Windows .NET , +  
+
+
+
+ Grid Layouts by co7eguy  
+
+
+
+
+
+Article 31 Jan 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+An introductory article about how to use the 'Grid' Layout in Java.
+
+Desktop Development » Grid & Data Controls » Grid Controls
+
+Java Java SE Dev Beginner   
+
+
+
+ The Ultimate Grid FAQ by The Ultimate Toolbox  
+
+
+
+
+
+Article 5 Oct 2007   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A selection of frequently asked questions submitted by users of the Ultimate Grid
+
+Platforms, Frameworks & Libraries » Mfc » The Ultimate Grid
+
+VC6 Win2K Win2003 Visual-Studio MFC Dev Intermediate C++ Windows   
+
+
+
+ JavaScript Grid Plugin by Nitij  
+
+
+
+
+
+Article 27 Apr 2014   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Lightweight and easy to use JavaScript plugin to create UI Grids.
+
+Web Development » Client Side Scripting » Controls
+
+Javascript grid   
+
+
+
+ Graphical grid component by Matthew Hazlett  
+
+  
+
+
+
+Article 13 Jan 2004   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+Easy manipulation of graphical grids
+
+Languages » C / C++ Language » General
+
+VC6 VC7 VC7.1 .NET1.1 Win2K WinXP Win2003 VS.NET2003 C++/CLI C# , +  
+
+
+
+ WPF Padded Grid by Dave Kerr  
+
+  
+
+
+
+Article 6 Sep 2010   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A padded grid for WPF that is ideal for laying out forms.
+
+Platforms, Frameworks & Libraries » Windows Presentation Foundation » Controls
+
+C# Windows WPF Beginner   
+
+
+
+ Bootstrap Editable Grid by Kathrene7  
+
+  
+
+
+
+Tip/Trick 6 Jun 2015   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A quick tip on setting up a Bootstrap responsive Editable Grid with ShieldUI-Lite
+
+Web Development » Applications & Tools » General
+
+Javascript CSS jQuery bootstrap   
+
+
+
+ Ordering Items in the Property Grid by Paul Tingey  
+
+  
+
+
+
+Article 5 Apr 2004   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A simple custom attribute to order properties in the PropertyGrid.
+
+Languages » C# » General
+
+.NET1.1 Win2K WinXP Win2003 VS.NET2003 C# Dev Intermediate Windows .NET , +  
+
+
+
+ Jquery Grid (VGrid) by vijay venkatesh prasad N  
+
+  
+
+
+
+Article 22 Aug 2014   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Reusable tool for implementing Grid
+
+Web Development » Custom Controls » General
+
+C# Javascript Windows HTML Beginner Visual-Studio MVC VS2010 jQuery   
+
+
+
+ C# grid control by linjie  
+
+  
+
+
+
+Article 17 Nov 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+A C# grid control.
+
+Desktop Development » Miscellaneous » Miscellaneous Controls
+
+.NET1.0 .NET1.1 Win2K WinXP Win2003 C# Visual-Studio Dev Intermediate Windows , +  
+
+
+
+ Formatting AutoGenerateColumns in an ASP.NET Grid by Mike Ellison  
+
+  
+
+
+
+Article 23 Oct 2006   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Demonstrates how to apply conditional formatting in a GridView or DataGrid when columns are dynamically generated, and wrap such code in an IExtenderProvider control.
+
+Web Development » Asp.Net Controls » Grid Controls
+
+C# ASP.NET XML Windows .NET Visual-Studio HTML Dev ADO.NET Intermediate   
+
+
+
+ Pivot Grid in Asp.Net MVC by Anurag Gandhi  
+
+  
+
+
+
+Article 5 Sep 2014   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A Grid/Report control in Asp.Net MVC with pivot option
+
+Web Development » Asp.Net » Reporting
+
+C# ASP.NET Windows .NET Visual-Studio HTML Architect Dev Design LINQ , +  
+
+
+
+ Globalized Property Grid - Revisited by Gerd Klevesaat  
+
+  
+
+
+
+Article 14 Jun 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+This article introduces localization of category names in a globalized property grid control and considers inheritance issues.
+
+Desktop Development » Miscellaneous » General
+
+.NET1.0 .NET1.1 VS.NET2002 C# Windows Dev Intermediate .NET Visual-Studio   
+
+
+
+ jQuery (jTemplates) Grid by Alexandru Cibotari  
+
+  
+
+
+
+Article 1 Dec 2009   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+An introduction to jTemplates with an example of how to create a grid using jTemplates.
+
+Web Development » Custom Controls » General
+
+C# ASP.NET Javascript .NET Dev Intermediate   
+
+
+
+ Temporary Values in Grid by padmanabhan N  
+
+  
+
+
+
+Article 5 May 2009   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+Temporary Values in Grid
+
+Web Development » Asp.Net » General
+
+.NET2.0 C# .NET Beginner .NET   
+
+
+
+ CGridListCtrlEx - Grid Control Based on CListCtrl by Rolf Kristensen  
+
+  
+
+
+
+Article 16 Mar 2015   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+A custom draw CListCtrl with subitem editing and formatting
+
+Desktop Development » List Controls » Custom Draw
+
+VC6 VC7.1 VS.NET2003 VS2005 VS6 VS2008 C++ Windows Win32 Win64 , +  
+
+
+
+ Performance Monitor Grid by retZ  
+
+  
+
+
+
+Article 4 Nov 2003   license: N/A 
+
+
+
+
+ 
+
+ 
+   
+
+Tool to monitor machines on network.
+
+Languages » C# » Applications
+
+.NET1.1 VS.NET2003 C# Windows Dev Intermediate .NET Visual-Studio   
+
+
+
+ Grid View with Fixed Header by Prakash Varun 2010  
+
+  
+
+
+
+Article 11 Mar 2010   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+This article provides you with the solution of scrolling Grid View with fixed Header in ASP.NET.
+
+Web Development » Asp.Net Controls » Grid Controls
+
+ASP.NET   
+
+
+
+ 1024-bit RSA encryption cracked by carefully starving CPU of electricity [modified] by TheArchitectmc∞  
+
+
+
+
+
+Forum Message 10 Mar 2010   
+
+
+
+
+ 
+
+ 
+   
+
+'The military has been doing this for along time, except they fly over a city and mess with the signals on the power grid causing brown outs or even shutting down the grids causing spikes, when the grid transfers to another grid. China hates it w
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Electric Bill Preparation and Printing in C# by hasan_basri  
+
+
+
+
+
+Question 12 Feb 2011   license: CPOL 
+
+
+
+
+ 
+
+ 
+   
+
+I am currently trying to figure out a short path to print an electric bill.One option that i could come up till now is googling a present electric bill template and loading it with PictureBox item,later on trying to print texts taken from database onto this PictureBox item.Another option...
+
+General Programming » Uncategorised Quick Answers » General
+
+C#   
+
+Click here to Skip to main content 
+
+
+
+
+11,557,379 members (60,751 online)
+
+
+
+  Sign in 
+
+
+
+
+
+
+
+
+
+
+
+
+.
+
+--------------------------------------------------------------------------------
+ 
+
+
+Home
+ 
+
+
+
+
+
+
+
+home
+articlesChapters and Sections>
+loading 
+
+
+Search
+Latest Articles
+Latest Tips/Tricks
+Top Articles
+Beginner Articles
+Technical Blogs
+Posting/Update Guidelines
+Article Help Forum
+Article Competition
+ Submit an article or tip 
+ Post your Blog 
+
+
+quick answers  Ask a Question
+View Unanswered Questions
+View All Questions...
+Linux questions
+C# questions
+ASP.NET questions
+C#5 questions
+SQL questions
+
+
+discussions All Message Boards...
+Application Lifecycle>Running a Business
+Sales / Marketing
+Collaboration / Beta Testing
+Work & Training Issues
+
+Design and Architecture
+ASP.NET
+JavaScript
+C / C++ / MFC>ATL / WTL / STL
+Managed C++/CLI
+
+Adobe Technologies
+C#
+Free Tools
+Objective-C
+Ruby On Rails
+Database
+Hardware & Devices>System Admin
+
+Hosting and Servers
+Java
+.NET Framework
+Android
+iOS
+Mobile
+Sharepoint
+Silverlight / WPF
+Visual Basic
+Web Development
+Site Bugs / Suggestions
+
+
+featuresCompetitions
+News
+The Insider Newsletter
+The Daily Build Newsletter
+Newsletter archive
+Surveys
+Product Showcase
+Research Library
+CodeProject Stuff
+
+
+community Who's Who
+Most Valuable Professionals
+The Lounge  
+The Insider News
+The Weird & The Wonderful
+The Soapbox
+Press Releases
+Non-English Language >General Indian Topics
+General Chinese Topics
+
+
+
+helpWhat is 'CodeProject'?
+General FAQ
+Ask a Question
+Bugs and Suggestions
+Article Help Forum
+Site Map
+Advertise with us
+Employment Opportunities
+About Us
+
+
+
+
+
+
+
+
+
+  
+
+    
+  
+  
+
+ 
+
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+    
+
+66,271 Results
+
+
+
+
+Search
+Everything
+Articles
+Technical Blogs
+Tips & Tricks
+Reference Articles
+Research Library
+Questions
+Answers
+Forum Messages
+News Items 
+
+Just My Stuff
+My Bookmarks 
+
+
+Sort by
+Relevance Rating (Hi - Lo) Rating (Lo - Hi) Popularity (Hi - Lo) Popularity (Lo - Hi) Votes (Hi - Lo) Votes (Lo - Hi) Modified (New - Old) Modified (Old - New) Thread Modified (New - Old) Thread Modified (Old - New) Created (New - Old) Created (Old - New) Title (A - Z) Title (Z - A) Author (A - Z) Author (Z - A) Price ($ - $$$) Price ($$$ - $) Duration (Short - Long) Duration (Long - Short)  
+
+
+
+Match
+
+All Fields Title Description Author(s) Tags  
+
+Any Date Last 12 hours Last 24 hours Last week Last 2 weeks Last month Last 3 months Last 6 months Last year January February March April May June July August September October November December  
+
+
+Rating Range
+All - Including Unrated 1.0 - 5.0 2.0 - 5.0 3.0 - 5.0 4.0 - 5.0 4.5 - 5.0 4.8 - 5.0 5.0  
+
+Advanced Filters:
+
+
+Article Topics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Article License
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Forums
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Page 10 of 2,651
+
+
+Page Size: 10 · 25 · 50
+
+
+--------------------------------------------------------------------------------
+
+
+
+
+ Re: An electric bicycle... by Paul Watson  
+
+
+
+
+
+Forum Message 4 Dec 2008   
+
+
+
+Got a pedal powered car eh? ;) cheers, Paul M. Watson.
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: An electric bicycle... by Gary Wheeler  
+
+
+
+
+
+Forum Message 4 Dec 2008   
+
+
+
+That's four wheels; doesn't count. Software Zen: delete this;
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Electricity price by S. Becker  
+
+
+
+
+
+Forum Message 10 Dec 2008   
+
+
+
+And still ($0.12 US) only half of what i have to pay.
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Electricity voltage in Dubai by Norm .net  
+
+
+
+
+
+Forum Message 16 Mar 2009   
+
+
+
+
+ 
+
+ 
+   
+
+World Voltage[^] Look for United Arab Emirates. Seems it's 240v and UK Plug. 
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Wireless electricity by TommyTomToms  
+
+
+
+
+
+Forum Message 23 Jul 2009   
+
+
+
+oh, you mean like this http://www.vimeo.com/4102628[^] :-D
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Wireless electricity by Rob Graham  
+
+
+
+
+
+Forum Message 23 Jul 2009   
+
+
+
+Would you like to stand between the source coil and the receiver?
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Wireless electricity by Chris Quinn  
+
+
+
+
+
+Forum Message 23 Jul 2009   
+
+
+
+Nicolai Tesla in the 1910's http://en.wikipedia.org/wiki/Wardenclyffe_Tower[^] 
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: No electricity since morning... by Nishant Sivakumar  
+
+
+
+
+
+Forum Message 19 Dec 2010   
+
+
+
+For publishing on CodeProject? Regards, NishMy technology blog: voidnish.wordpress.com
+
+Non-English Language » General Indian Topics
+
+  
+
+
+
+ Re: No electricity since morning... by Eswa  
+
+
+
+
+
+Forum Message 19 Dec 2010   
+
+
+
+Yes. trying to participate in Beginners article competition.
+
+Non-English Language » General Indian Topics
+
+  
+
+
+
+ Re: Electric Cars by djj55  
+
+
+
+
+
+Forum Message 31 Oct 2011   
+
+
+
+If we could only harness flatulence, problem solved. :)
+
+General Discussions » The Back Room
+
+  
+
+
+
+ Re: Electric Cars by djj55  
+
+
+
+
+
+Forum Message 31 Oct 2011   
+
+
+
+I think we need something like Star Trek[^] :-D
+
+General Discussions » The Back Room
+
+  
+
+
+
+ Re: Electric Cars by Rhuros  
+
+
+
+
+
+Forum Message 2 Nov 2011   
+
+
+
+Nope that would be this[^] Where as you're talking about the 
+
+General Discussions » The Back Room
+
+  
+
+
+
+ Re: Automotive Electrical Quandry by Maximilien  
+
+
+
+
+
+Forum Message 7 Feb 2012   
+
+
+
+And yet it works flawlessly for 99.99% of the cars out there. Watched code never compiles.
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: What have you do with four days of electricity off? by _Maxxx_  
+
+
+
+
+
+Forum Message 16 Dec 2013   
+
+
+
+
+ 
+
+ 
+   
+
+Wait for the population explosion in September! MVVM # - I did it My Way ___________________________________________ Man, you're a god. - walterhevedei
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Energy to electricity... by MehGerbil  
+
+
+
+
+
+Forum Message 6 Dec 2014   
+
+
+
+I'm just spit balling ideas here: Idea[^]
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Electric/Plasma Universe ? [modified] by killabyte  
+
+
+
+
+
+Forum Message 11 Jul 2008   
+
+
+
+How many of you are familar with this concept? http://www.youtube.com/watch?v=V026kSw4XCs&feature=related[
+
+General Discussions » The Lounge
+
+  
+
+
+
+ More Electric Car Stuff by Chris Losinger  
+
+
+
+
+
+Forum Message 28 Jan 2009   
+
+
+
+http://www.opb.org/programs/ofg/videos/view/56-Electric-Drag-Racing[
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Wireless electricity??? are you kidding? by Govindaraj Rangaraj  
+
+
+
+
+
+Forum Message 19 Mar 2014   
+
+
+
+Check this out http://edition.cnn.com/2014/03/14/tech/innovation/wireless-electricity/index.html?c&page=4[
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Your electric life by DavidCrow  
+
+
+
+
+
+Forum Message 12 Oct 2006   
+
+
+
+
+ 
+
+ 
+   
+
+Paul Watson wrote:If your electricity went down how screwed would you be? Unless the phone company also went down, I'd be fine. I can operate without lights. I'd have a hard time with t
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Your electric life by John Simmons / outlaw programmer  
+
+
+
+
+
+Forum Message 12 Oct 2006   
+
+
+
+I have a standard phone that doesn't need electricity to work. I also have one of those solar/wind-up radios so we can keep tabs on things if the power goes out. 
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Electric Sheep WMP Plug In by Specter13  
+
+
+
+
+
+Forum Message 8 Feb 2009   
+
+
+
+just a small suggestion, i would do it myself, but i'll admit that it's a bit out of my depth. the electric sheep rating system (i.e. pushing up and down to rate the sheep)in the media player when it is in full screen changes the play count of the so
+
+General Discussions » Using Screensavers Inside The Windows Media Player
+
+  
+
+
+
+ Re: Electric public transport by Ed.Poore  
+
+
+
+
+
+Forum Message 30 Mar 2010   
+
+
+
+I notice alot of wills in that article. Yeah sure, I'll build a electric powered amphibious Land Rover that will have a top-speed of 200mph and only require charging once every year. Just because I say I will do it doesn't mean it's possible or w
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Hidden electricity costs by S.H.Bouwhuis  
+
+
+
+
+
+Forum Message 24 May 2010   
+
+
+
+I think the amount of money you will be spending on having your amp and computer on 24/7 can really increase your electricity bill. For instance, my amp takes a continuous 70 Watt, and a computer will also take at least 30 Watt or something. So, havi
+
+General Discussions » Article "Cam Alarm 2.0 - Alarm System Run From A Web Camera"
+
+  
+
+
+
+ Re: Electrical Engineering Question by Jim Crafton  
+
+
+
+
+
+Forum Message 1 Sep 2011   
+
+
+
+wizardzz wrote:I called because water was coming out of the electrical socket. Wow now there's some serious comedic material right there! I suppose that's better than water going *into* th
+
+General Discussions » The Lounge
+
+  
+
+
+
+ Re: Electrical Engineering Question by GenJerDan  
+
+
+
+
+
+Forum Message 1 Sep 2011   
+
+
+
+But if you turn everything else on throughout the house, there won't be any electricity left in the wires going to the bad outlet. It's just like when you're taking a shower and your wife turns on the washing machine and the hot water in the showe
+
+General Discussions » The Lounge
+
+
+
+
+Page 10 of 2,651
+
+ 
+
+
+
+
+
+
